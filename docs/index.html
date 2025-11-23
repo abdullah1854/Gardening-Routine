@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gardening Routine Scheduler</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Gardening Routine Scheduler</h1>
+            <p>Dynamic schedule based on Kithech Garden Fertilizer guide</p>
+        </header>
+
+        <div class="controls">
+            <div class="control-group">
+                <label for="start-date">Start Date:</label>
+                <input type="date" id="start-date">
+            </div>
+            
+            <div class="control-group">
+                <label for="duration">Duration:</label>
+                <select id="duration">
+                    <option value="6">6 Months</option>
+                    <option value="12">1 Year</option>
+                </select>
+            </div>
+
+            <button id="generate-btn">Update Schedule</button>
+        </div>
+
+        <div id="schedule-container" class="schedule-container">
+            <!-- Schedule will be generated here -->
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

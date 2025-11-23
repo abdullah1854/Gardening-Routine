@@ -1,0 +1,197 @@
+:root {
+    --primary-color: #2e7d32;
+    --secondary-color: #4caf50;
+    --accent-color: #81c784;
+    --background-color: #f1f8e9;
+    --text-color: #1b5e20;
+    --card-bg: #ffffff;
+    --border-radius: 12px;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 40px;
+    padding: 20px;
+    background-color: var(--primary-color);
+    color: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+}
+
+h1 {
+    margin: 0;
+    font-size: 2.5rem;
+}
+
+.controls {
+    background-color: var(--card-bg);
+    padding: 20px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    margin-bottom: 30px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    align-items: center;
+    justify-content: center;
+}
+
+.control-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+label {
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+input[type="date"], select {
+    padding: 10px;
+    border: 2px solid var(--accent-color);
+    border-radius: 8px;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+input[type="date"]:focus, select:focus {
+    border-color: var(--primary-color);
+}
+
+button {
+    padding: 10px 20px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: auto;
+}
+
+button:hover {
+    background-color: var(--text-color);
+}
+
+.schedule-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.month-block {
+    background-color: var(--card-bg);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+}
+
+.month-header {
+    background-color: var(--secondary-color);
+    color: white;
+    padding: 15px 20px;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.event-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.event-item {
+    padding: 15px 20px;
+    border-bottom: 1px solid #e0e0e0;
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+}
+
+.event-item:last-child {
+    border-bottom: none;
+}
+
+.event-date {
+    font-weight: bold;
+    color: var(--primary-color);
+    min-width: 100px;
+    flex-shrink: 0;
+}
+
+.event-details {
+    flex-grow: 1;
+}
+
+.event-title {
+    font-weight: bold;
+    font-size: 1.1rem;
+    margin-bottom: 5px;
+}
+
+.event-desc {
+    font-size: 0.9rem;
+    color: #555;
+}
+
+.tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    margin-left: 10px;
+    color: white;
+}
+
+.tag-fertilizer { background-color: #ff9800; }
+.tag-pest { background-color: #f44336; }
+.tag-soil { background-color: #795548; }
+.tag-supplement { background-color: #9c27b0; }
+
+@media print {
+    body {
+        background-color: white;
+    }
+    .controls, header {
+        display: none;
+    }
+    .container {
+        width: 100%;
+        max-width: none;
+        padding: 0;
+    }
+    .month-block {
+        box-shadow: none;
+        border: 1px solid #ccc;
+        break-inside: avoid;
+    }
+}
+
+@media (max-width: 600px) {
+    .event-item {
+        flex-direction: column;
+        gap: 5px;
+    }
+    .event-date {
+        min-width: auto;
+    }
+}
