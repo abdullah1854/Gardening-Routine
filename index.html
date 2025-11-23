@@ -1,40 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gardening Routine Scheduler</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <div class="container">
         <header>
-            <h1>Gardening Routine Scheduler</h1>
-            <p>Dynamic schedule based on Kithech Garden Fertilizer guide</p>
+            <div class="header-left">
+                <div class="logo-icon">🌱</div>
+                <h1>Fertilizer Schedule Generator</h1>
+            </div>
+            <div class="header-right">
+                <div class="control-group">
+                    <input type="date" id="start-date">
+                </div>
+                <!-- Duration is implicit now, defaulting to 6 months view -->
+                <button id="generate-btn" class="btn-primary">Update</button>
+                <button id="print-btn" class="btn-secondary">🖨️ Print</button>
+            </div>
         </header>
+        <p class="subtitle">Plan your 6-month gardening care routine.</p>
 
-        <div class="controls">
-            <div class="control-group">
-                <label for="start-date">Start Date:</label>
-                <input type="date" id="start-date">
-            </div>
-            
-            <div class="control-group">
-                <label for="duration">Duration:</label>
-                <select id="duration">
-                    <option value="6">6 Months</option>
-                    <option value="12">1 Year</option>
-                </select>
-            </div>
-
-            <button id="generate-btn">Update Schedule</button>
-        </div>
-
-        <div id="schedule-container" class="schedule-container">
+        <div id="schedule-container" class="schedule-grid">
             <!-- Schedule will be generated here -->
         </div>
     </div>
 
     <script src="script.js"></script>
 </body>
+
 </html>
