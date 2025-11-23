@@ -1,7 +1,7 @@
 const routineItems = [
     {
         name: "Mustard Cake Water",
-        frequency: 15,
+        frequency: 20, // Range 15-20 days. Using 20 to allow gaps.
         offset: 0,
         type: "fertilizer",
         description: "Mix 1 part cake with 4-5 parts water, soak 24-48h. Dilute 1:3 before use. Use on wet soil."
@@ -16,35 +16,35 @@ const routineItems = [
     {
         name: "Compost / Vermicompost",
         frequency: 20,
-        offset: 0,
+        offset: 5, // 5 days after Mustard (Day 0). Safe.
         type: "soil",
         description: "2-3 handfuls per pot. Mix into top 1-2 inches. Gentle and improves soil structure."
     },
     {
         name: "Neem Oil Spray",
         frequency: 7,
-        offset: 0,
+        offset: 2, // Shifted to Day 2 to avoid direct clash with Mustard (Day 0).
         type: "pest",
         description: "Preventive. 5ml oil + 2-3 drops soap + 1L water. Spray in evening."
     },
     {
         name: "Neem Khali",
-        frequency: 30,
-        offset: 10, // 10 days gap from Mustard Cake (Day 0)
+        frequency: 40, // Range 30-45. Syncs with Mustard (20x2).
+        offset: 10, // Day 10. 10 days after Mustard(0), 10 days before Mustard(20). Perfect.
         type: "soil",
         description: "Soil pest control. 1-2 tbsp per pot. Mix in top soil. Don't mix with Mustard Cake."
     },
     {
         name: "Epsom Salt Spray",
-        frequency: 30,
-        offset: 0,
+        frequency: 40, // Range 30-45.
+        offset: 25, // Day 25. 5 days after Mustard(20). 2 days after Neem Oil(23). Safe.
         type: "supplement",
         description: "1 tbsp + 1L water. Spray on leaves in evening. Good for yellowing leaves."
     },
     {
         name: "Paecilomyces lilacinus",
-        frequency: 30,
-        offset: 20, // 20 days from start, ensures gap from Neem Khali (Day 10) and Mustard Cake (Day 15)
+        frequency: 40, // Range 30-45.
+        offset: 30, // Day 30. 10 days after Mustard(20), 10 days before Mustard(40). 20 days after Neem Khali(10). Perfect.
         type: "soil",
         description: "Nematode control. 10-20g powder or 5-10ml liquid per pot. Apply to soil."
     }
