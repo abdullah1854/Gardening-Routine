@@ -8,8 +8,8 @@ const routineItems = [
         offset: 0,
         type: "fertilizer",
         description: "Soak 24-48 hrs, dilute 1:3. Use on wet soil only.",
-        conflictsWith: ["Neem Khali", "Paecilomyces lilacinus"],
-        conflictGaps: { "Neem Khali": 12, "Organic Iron Dust": 10 },
+        conflictsWith: [],
+        conflictGaps: { "Neem Khali": 12, "Organic Iron Dust": 10, "Paecilomyces lilacinus": 8 },
         warning: "Keep 10-15 days gap from Neem Khali"
     },
     {
@@ -45,8 +45,8 @@ const routineItems = [
         offset: 10,
         type: "soil",
         description: "Soil application for nematodes/fungus. Mix into top 1-2 inches.",
-        conflictsWith: ["Mustard Cake Water"],
-        conflictGaps: { "Mustard Cake Water": 12 },
+        conflictsWith: [],
+        conflictGaps: { "Mustard Cake Water": 12, "Paecilomyces lilacinus": 5 },
         warning: "Keep 10-15 days gap from Mustard Cake Water"
     },
     {
@@ -65,9 +65,9 @@ const routineItems = [
         offset: 30,
         type: "soil",
         description: "Nematode bio-control. Apply to moist soil, not foliage.",
-        conflictsWith: ["Neem Oil Spray", "Mustard Cake Water"],
-        conflictGaps: { "Organic Iron Dust": 7 },
-        warning: "Keep 5-7 days gap from Iron"
+        conflictsWith: ["Neem Oil Spray"],
+        conflictGaps: { "Organic Iron Dust": 7, "Mustard Cake Water": 8, "Neem Khali": 5 },
+        warning: "Keep 5-7 days gap from Iron, 7-10 days from Mustard Cake"
     },
     {
         name: "Seaweed Extract",
