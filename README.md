@@ -12,15 +12,26 @@ A dynamic, intelligent scheduling tool for your garden, based on the **Kithech G
 
 ## 📅 The Routine
 
-The schedule is built on a scientifically-backed rotation of organic fertilizers and pest control measures:
+The schedule is built on a scientifically-backed rotation of organic fertilizers, supplements, and pest control measures:
 
-*   **Mustard Cake Water**: Every 20 days (High Nitrogen boost).
-*   **Neem Oil Spray**: Every 7 days (Preventive pest control).
-*   **Neem Khali**: Every 40 days (Soil pest control & immunity).
-*   **Compost / Vermicompost**: Every 20 days (Soil structure & steady nutrients).
-*   **Epsom Salt Spray**: Every 40 days (Magnesium for lush foliage).
-*   **Bone Meal**: Every 45 days (Phosphorus for flowering/fruiting).
-*   **Paecilomyces lilacinus**: Every 40 days (Nematode protection).
+### 🌿 Fertilizers
+*   **Mustard Cake Water**: Every 17 days — Soak 24-48 hrs, dilute 1:3. Use on wet soil only. Keep 10-15 days gap from Neem Khali.
+*   **PROM Granules**: Every 52 days — Phosphate-rich organic manure for flowering/fruiting.
+
+### 🧪 Supplements
+*   **Bone Meal**: Every 52 days — Slow-release phosphorus for flowering (1-2 Tbsp mixed into soil).
+*   **Seaweed Extract**: Every 17 days — Foliar spray or root drench (5-10ml/L). Growth hormones & micronutrients.
+*   **Epsom Salt Spray**: Every 37 days — Foliar spray (1 tbsp/L). Magnesium for lush green foliage. Keep 7-day gap from Iron.
+*   **Organic Iron Dust**: Every 37 days — Treats chlorosis (yellow leaves with green veins). Requires gaps from many items.
+
+### 🛡️ Pest Control
+*   **Neem Oil Spray**: Every 8 days — Spray in evening (5ml/L + liquid soap). Covers both leaf sides.
+
+### 🌱 Soil Health
+*   **Compost / Vermicompost**: Every 22 days — Mix 2-3 handfuls into top soil. Water afterwards.
+*   **Neem Khali**: Every 37 days — Soil application for nematodes/fungus. Keep 10-15 days gap from Mustard Cake Water.
+*   **Paecilomyces lilacinus**: Every 37 days — Nematode bio-control. Apply to moist soil, not foliage.
+*   **Trichoderma**: Every 37 days — Beneficial fungi for soil health. Improves disease resistance.
 
 ## 🚀 How to Use
 

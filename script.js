@@ -4,8 +4,8 @@
 const routineItems = [
     {
         name: "Mustard Cake Water",
-        frequency: 17,
-        offset: 0,
+        frequency: 30,
+        offset: 0, // Week 1
         type: "fertilizer",
         description: "Soak 24-48 hrs, dilute 1:3. Use on wet soil only.",
         conflictsWith: [],
@@ -13,36 +13,36 @@ const routineItems = [
         warning: "Keep 10-15 days gap from Neem Khali"
     },
     {
-        name: "Bone Meal",
-        frequency: 52,
-        offset: 0,
+        name: "Seaweed Extract",
+        frequency: 30,
+        offset: 7, // Week 2
         type: "supplement",
-        description: "1-2 Tbsp mixed into soil holes. Slow-release phosphorus for flowering.",
+        description: "Foliar spray or root drench (5-10ml/L). Growth hormones & micronutrients.",
         conflictsWith: [],
-        conflictGaps: { "Organic Iron Dust": 10 }
+        conflictGaps: {}
     },
     {
         name: "Compost / Vermicompost",
-        frequency: 22,
-        offset: 14,
+        frequency: 30,
+        offset: 14, // Week 3
         type: "soil",
         description: "Mix 2-3 handfuls into top soil. Water afterwards.",
         conflictsWith: [],
         conflictGaps: {}
     },
     {
-        name: "Neem Oil Spray",
-        frequency: 8,
-        offset: 2,
-        type: "pest",
-        description: "Spray in evening. 5ml/L + liquid soap. Covers both leaf sides.",
-        conflictsWith: ["Paecilomyces lilacinus", "Trichoderma"],
-        conflictGaps: {}
+        name: "PROM Granules",
+        frequency: 60,
+        offset: 21, // Week 4 (Month 1, 3, 5...)
+        type: "fertilizer",
+        description: "Mix into soil. Phosphate-rich organic manure for flowering/fruiting.",
+        conflictsWith: [],
+        conflictGaps: { "Organic Iron Dust": 10 }
     },
     {
         name: "Neem Khali",
-        frequency: 37,
-        offset: 10,
+        frequency: 60,
+        offset: 51, // Week 4 (Month 2, 4, 6...) - Alternates with PROM
         type: "soil",
         description: "Soil application for nematodes/fungus. Mix into top 1-2 inches.",
         conflictsWith: [],
@@ -50,9 +50,27 @@ const routineItems = [
         warning: "Keep 10-15 days gap from Mustard Cake Water"
     },
     {
+        name: "Bone Meal",
+        frequency: 90,
+        offset: 81, // Week 4 (Every 3rd month) - Optional/Seasonal
+        type: "supplement",
+        description: "1-2 Tbsp mixed into soil. Slow-release phosphorus. Use if required.",
+        conflictsWith: [],
+        conflictGaps: { "Organic Iron Dust": 10 }
+    },
+    {
+        name: "Neem Oil Spray",
+        frequency: 7, // Weekly
+        offset: 2,
+        type: "pest",
+        description: "Spray in evening. 5ml/L + liquid soap. Covers both leaf sides.",
+        conflictsWith: ["Paecilomyces lilacinus", "Trichoderma"],
+        conflictGaps: {}
+    },
+    {
         name: "Epsom Salt Spray",
-        frequency: 37,
-        offset: 25,
+        frequency: 30,
+        offset: 10, // Fits in Week 2 with Seaweed
         type: "supplement",
         description: "Foliar spray (1 tbsp/L). Magnesium for lush green foliage.",
         conflictsWith: ["Neem Oil Spray"],
@@ -60,39 +78,11 @@ const routineItems = [
         warning: "Keep 7-day gap from Iron application"
     },
     {
-        name: "Paecilomyces lilacinus",
-        frequency: 37,
-        offset: 30,
-        type: "soil",
-        description: "Nematode bio-control. Apply to moist soil, not foliage.",
-        conflictsWith: ["Neem Oil Spray"],
-        conflictGaps: { "Organic Iron Dust": 7, "Mustard Cake Water": 8, "Neem Khali": 5 },
-        warning: "Keep 5-7 days gap from Iron, 7-10 days from Mustard Cake"
-    },
-    {
-        name: "Seaweed Extract",
-        frequency: 17,
-        offset: 7,
-        type: "supplement",
-        description: "Foliar spray or root drench (5-10ml/L). Growth hormones & micronutrients.",
-        conflictsWith: [],
-        conflictGaps: {}
-    },
-    {
-        name: "PROM Granules",
-        frequency: 52,
-        offset: 21,
-        type: "fertilizer",
-        description: "Mix into soil. Phosphate-rich organic manure for flowering/fruiting.",
-        conflictsWith: [],
-        conflictGaps: { "Organic Iron Dust": 10 }
-    },
-    {
         name: "Organic Iron Dust",
-        frequency: 37,
-        offset: 18,
+        frequency: 45,
+        offset: 25, // Floating schedule
         type: "supplement",
-        description: "Treats chlorosis (yellow leaves with green veins). Soil or foliar application.",
+        description: "Treats chlorosis. Soil or foliar application.",
         conflictsWith: [],
         conflictGaps: {
             "Epsom Salt Spray": 7,
@@ -105,9 +95,19 @@ const routineItems = [
         warning: "Requires gaps from many items - check schedule"
     },
     {
+        name: "Paecilomyces lilacinus",
+        frequency: 45,
+        offset: 35, // Floating schedule
+        type: "soil",
+        description: "Nematode bio-control. Apply to moist soil, not foliage.",
+        conflictsWith: ["Neem Oil Spray"],
+        conflictGaps: { "Organic Iron Dust": 7, "Mustard Cake Water": 8, "Neem Khali": 5 },
+        warning: "Keep 5-7 days gap from Iron, 7-10 days from Mustard Cake"
+    },
+    {
         name: "Trichoderma",
-        frequency: 37,
-        offset: 35,
+        frequency: 45,
+        offset: 40, // Floating schedule
         type: "soil",
         description: "Beneficial fungi for soil health. Improves disease resistance.",
         conflictsWith: ["Neem Oil Spray"],
