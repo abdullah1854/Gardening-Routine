@@ -4,31 +4,186 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gardening Routine Scheduler</title>
+    <title>Garden Care Scheduler | Kitchen Garden Fertilizer Planner</title>
+    <meta name="description" content="Smart fertilizer and care planning for your kitchen garden. Track 11 organic treatments with automatic conflict resolution.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <div class="container">
-        <header>
-            <div class="header-left">
-                <div class="logo-icon">🌱</div>
-                <h1>Fertilizer Schedule Generator</h1>
-            </div>
-            <div class="header-right">
-                <div class="control-group">
-                    <input type="date" id="start-date">
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-brand">
+                <div class="logo">
+                    <svg class="logo-icon" width="36" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z" fill="#e8f5e9"/>
+                        <path d="M12 6c-1.5 0-3 1.5-3 4 0 1.5.5 2.5 1 3.5.5 1 1 2 1 3.5h2c0-1.5.5-2.5 1-3.5.5-1 1-2 1-3.5 0-2.5-1.5-4-3-4z" fill="#4caf50"/>
+                        <path d="M9 17h6v1c0 .55-.45 1-1 1h-4c-.55 0-1-.45-1-1v-1z" fill="#2e7d32"/>
+                        <path d="M12 6c-.83 0-1.5-.67-1.5-1.5S11.17 3 12 3s1.5.67 1.5 1.5S12.83 6 12 6z" fill="#81c784"/>
+                    </svg>
                 </div>
-                <!-- Duration is implicit now, defaulting to 6 months view -->
-                <button id="generate-btn" class="btn-primary">Update</button>
-                <button id="print-btn" class="btn-secondary">🖨️ Print</button>
+                <div class="brand-text">
+                    <h1>Garden Care Scheduler</h1>
+                    <p class="tagline">Smart fertilizer & care planning</p>
+                </div>
+            </div>
+
+            <div class="header-controls">
+                <div class="control-group date-group">
+                    <label for="start-date">Start Date</label>
+                    <div class="date-input-wrapper">
+                        <input type="date" id="start-date" value="2025-12-01">
+                        <button id="today-btn" class="btn-icon" title="Set to today">Today</button>
+                    </div>
+                </div>
+
+                <div class="control-group duration-group">
+                    <label for="duration">Duration</label>
+                    <select id="duration" class="duration-select">
+                        <option value="3">3 Months</option>
+                        <option value="6" selected>6 Months</option>
+                        <option value="12">12 Months</option>
+                    </select>
+                </div>
+
+                <div class="action-buttons">
+                    <button id="generate-btn" class="btn btn-primary">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                        </svg>
+                        Generate
+                    </button>
+                    <button id="print-btn" class="btn btn-secondary">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2M6 14h12v8H6v-8z"/>
+                        </svg>
+                        Print
+                    </button>
+                    <button id="export-btn" class="btn btn-secondary">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+                        </svg>
+                        Export
+                    </button>
+                </div>
             </div>
         </header>
-        <p class="subtitle">Plan your 6-month gardening care routine.</p>
 
-        <div id="schedule-container" class="schedule-grid">
-            <!-- Schedule will be generated here -->
+        <!-- Stats Bar -->
+        <div class="stats-bar">
+            <div class="stat-item">
+                <span class="stat-value" id="total-events">0</span>
+                <span class="stat-label">Total Tasks</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-value" id="items-tracked">11</span>
+                <span class="stat-label">Items Tracked</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-value" id="conflicts-resolved">0</span>
+                <span class="stat-label">Conflicts Resolved</span>
+            </div>
         </div>
+
+        <!-- Main Layout -->
+        <div class="app-layout">
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <!-- Filters -->
+                <div class="sidebar-section">
+                    <h3 class="sidebar-title">Filter by Category</h3>
+                    <div class="filter-list">
+                        <label class="filter-item">
+                            <input type="checkbox" checked data-filter="fertilizer">
+                            <span class="filter-color color-fertilizer"></span>
+                            <span class="filter-label">Fertilizers</span>
+                            <span class="filter-count">2</span>
+                        </label>
+                        <label class="filter-item">
+                            <input type="checkbox" checked data-filter="pest">
+                            <span class="filter-color color-pest"></span>
+                            <span class="filter-label">Pest Control</span>
+                            <span class="filter-count">1</span>
+                        </label>
+                        <label class="filter-item">
+                            <input type="checkbox" checked data-filter="soil">
+                            <span class="filter-color color-soil"></span>
+                            <span class="filter-label">Soil Health</span>
+                            <span class="filter-count">4</span>
+                        </label>
+                        <label class="filter-item">
+                            <input type="checkbox" checked data-filter="supplement">
+                            <span class="filter-color color-supplement"></span>
+                            <span class="filter-label">Supplements</span>
+                            <span class="filter-count">4</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Ideal Schedule Reference -->
+                <div class="sidebar-section">
+                    <details class="ideal-schedule" open>
+                        <summary class="sidebar-title clickable">Ideal Monthly Schedule</summary>
+                        <div class="schedule-ref">
+                            <div class="ref-item">
+                                <span class="ref-week">Week 1</span>
+                                <span class="ref-task">Mustard Cake Water</span>
+                            </div>
+                            <div class="ref-item">
+                                <span class="ref-week">Week 2</span>
+                                <span class="ref-task">Seaweed Extract</span>
+                            </div>
+                            <div class="ref-item">
+                                <span class="ref-week">Week 3</span>
+                                <span class="ref-task">Compost / Vermicompost</span>
+                            </div>
+                            <div class="ref-item">
+                                <span class="ref-week">Week 4</span>
+                                <span class="ref-task">PROM Granules</span>
+                            </div>
+                            <div class="ref-divider"></div>
+                            <div class="ref-item">
+                                <span class="ref-week">30-45 days</span>
+                                <span class="ref-task">Trichoderma / Paecilomyces</span>
+                            </div>
+                            <div class="ref-item">
+                                <span class="ref-week">45-60 days</span>
+                                <span class="ref-task">Neem Khali / Bone Meal</span>
+                            </div>
+                        </div>
+                    </details>
+                </div>
+
+                <!-- Quick Tips -->
+                <div class="sidebar-section">
+                    <details class="quick-tips">
+                        <summary class="sidebar-title clickable">Quick Tips</summary>
+                        <ul class="tips-list">
+                            <li>Always apply fertilizers on wet soil</li>
+                            <li>Spray neem oil in evening only</li>
+                            <li>Keep 10-15 days gap between Mustard Cake & Neem Khali</li>
+                            <li>Iron needs 7-10 day gaps from most items</li>
+                            <li>Avoid chemical pesticides with bio-agents</li>
+                        </ul>
+                    </details>
+                </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="main-content">
+                <div id="schedule-container" class="schedule-grid">
+                    <!-- Schedule will be generated here -->
+                </div>
+            </main>
+        </div>
+
+        <!-- Footer -->
+        <footer class="app-footer">
+            <p>Based on Kitchen Garden Fertilizer Guide | <a href="https://github.com" target="_blank">View on GitHub</a></p>
+        </footer>
     </div>
 
     <script src="script.js"></script>

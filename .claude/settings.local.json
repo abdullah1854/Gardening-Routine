@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(unzip:*)",
+      "Bash(fold:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
