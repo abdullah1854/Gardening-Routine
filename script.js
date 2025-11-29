@@ -17,85 +17,90 @@ if ('serviceWorker' in navigator) {
 const routineItems = [
     {
         name: "Mustard Cake Water",
-        frequency: 17,
+        frequency: 15,
         offset: 0,
         type: "fertilizer",
-        description: "Ferment 48-72 hrs, dilute 1:3. Use on wet soil only; skip if plants look lush/dark.",
+        description: "Ferment 50g in 1L water for 48-72 hrs, then dilute 1:10 with water before use. Apply 100-200ml per plant on DRY soil (stop watering 1 day before). Water after application.",
         conflictsWith: [],
         conflictGaps: { "Neem Khali": 12, "Organic Iron Dust": 10, "Paecilomyces lilacinus": 8 },
-        warning: "Keep 10-15 days gap from Neem Khali; avoid cool, low-light periods"
+        warning: "Keep 10-15 days gap from Neem Khali; never apply to wet soil or during cool, low-light periods"
     },
     {
         name: "Seaweed Extract",
         frequency: 17,
         offset: 7,
         type: "supplement",
-        description: "Foliar spray or root drench (5-10ml/L). Boosts stress tolerance & micronutrients.",
+        description: "Foliar spray (5-10ml/L) or root drench (50-100ml/10L). Apply early morning 6-8AM or late afternoon 4-5PM. Boosts stress tolerance & micronutrients.",
         conflictsWith: [],
-        conflictGaps: {}
+        conflictGaps: { "Saaf Fungicide (Carbendazim + Mancozeb)": 5 },
+        warning: "Keep 4-5 day gap from chemical fertilizers/pesticides for best absorption"
     },
     {
         name: "Compost / Vermicompost",
-        frequency: 22,
+        frequency: 21,
         offset: 14,
         type: "soil",
-        description: "Mix 2-3 handfuls into top soil. Water afterwards.",
+        description: "Mix ¼-½ cup per plant into top soil. For beds, apply 0.5-1 inch layer and mix into top 6 inches. Water afterwards. Even 5% concentration significantly boosts growth.",
         conflictsWith: [],
-        conflictGaps: {}
+        conflictGaps: {},
+        warning: "For root vegetables, apply 120 days before harvest; for leafy vegetables, 90 days before harvest (food safety)"
     },
     {
         name: "PROM Granules",
         frequency: 52,
         offset: 21,
         type: "fertilizer",
-        description: "Mix into soil. Phosphate-rich organic manure for flowering/fruiting.",
+        description: "Phosphate-rich organic manure. Mix 1-2 Tbsp into soil around root zone. Excellent for flowering/fruiting stages. Slow-release, lasts several weeks.",
         conflictsWith: [],
-        conflictGaps: { "Organic Iron Dust": 10, "Bone Meal": 14 }
+        conflictGaps: { "Organic Iron Dust": 10, "Bone Meal": 14 },
+        warning: "Avoid combining with iron on same week - phosphorus can lock up iron"
     },
     {
         name: "Neem Khali",
-        frequency: 37,
-        offset: 37,
+        frequency: 30,
+        offset: 30,
         type: "soil",
-        description: "Soil application for nematodes/fungus. Mix into top 1-2 inches.",
+        description: "Nematode & fungus control. Mix 1-2 kg per sq.m into top 1-2 inches of soil. Nematocidal effect lasts ~30 days as it decomposes. Also adds nitrogen.",
         conflictsWith: [],
         conflictGaps: { "Mustard Cake Water": 12, "Paecilomyces lilacinus": 5 },
-        warning: "Keep 10-15 days gap from Mustard Cake Water"
+        warning: "Keep 10-15 days gap from Mustard Cake Water. Effect reduces after 15 days, fully gone by 30 days - time reapplication accordingly"
     },
     {
         name: "Bone Meal",
-        frequency: 52,
+        frequency: 60,
         offset: 45,
         type: "supplement",
-        description: "1-2 Tbsp mixed into soil. Slow-release phosphorus. Use if required.",
+        description: "Slow-release phosphorus for root development. 1-2 Tbsp per plant or 5-10 lbs per 100 sq.ft. Best at planting time. Takes weeks to break down.",
         conflictsWith: [],
-        conflictGaps: { "Organic Iron Dust": 10, "PROM Granules": 14 }
+        conflictGaps: { "Organic Iron Dust": 10, "PROM Granules": 14 },
+        warning: "High phosphorus can lock up iron - maintain 10-14 day gap from iron applications"
     },
     {
         name: "Neem Oil Spray",
-        frequency: 8,
+        frequency: 10,
         offset: 2,
         type: "pest",
-        description: "Spray in evening. 5ml/L + liquid soap. Covers both leaf sides.",
+        description: "5ml/L water + 1 tsp liquid soap as emulsifier. Spray BOTH leaf surfaces in evening only. For active infestations, can spray every 7 days until controlled.",
         conflictsWith: ["Paecilomyces lilacinus", "Trichoderma", "Btk Bio Larvicide"],
-        conflictGaps: {}
+        conflictGaps: { "Btk Bio Larvicide": 3, "Paecilomyces lilacinus": 3, "Trichoderma": 3 },
+        warning: "Evening only to prevent leaf burn. Harmful to beneficial microbes on contact - space 3+ days from bio-agents"
     },
     {
         name: "Epsom Salt Spray",
-        frequency: 37,
+        frequency: 21,
         offset: 10,
         type: "supplement",
-        description: "Foliar spray (1 tbsp/L). Magnesium for lush green foliage.",
+        description: "Magnesium sulfate foliar spray. 1 Tbsp (15g) per liter of water. Apply early morning or late afternoon. For potted plants, reduce to monthly.",
         conflictsWith: ["Neem Oil Spray"],
         conflictGaps: { "Organic Iron Dust": 7 },
-        warning: "Keep 7-day gap from Iron application; avoid hot midday sprays"
+        warning: "Keep 7-day gap from Iron - magnesium and iron compete for uptake. Avoid hot midday sprays to prevent leaf burn"
     },
     {
         name: "Organic Iron Dust",
-        frequency: 37,
+        frequency: 28,
         offset: 24,
         type: "supplement",
-        description: "Treats chlorosis. Soil or foliar application.",
+        description: "Treats chlorosis (yellow leaves, green veins). Foliar spray needs repeat every 2-4 weeks. Soil application can be done annually in early spring.",
         conflictsWith: [],
         conflictGaps: {
             "Epsom Salt Spray": 7,
@@ -105,57 +110,57 @@ const routineItems = [
             "PROM Granules": 10,
             "Bone Meal": 10
         },
-        warning: "Requires gaps from many items - check schedule"
+        warning: "Iron conflicts with phosphorus (Bone Meal, PROM) and magnesium (Epsom Salt). High soil pH locks up iron - test soil if chronic chlorosis"
     },
     {
         name: "Paecilomyces lilacinus",
-        frequency: 37,
-        offset: 30,
+        frequency: 28,
+        offset: 28,
         type: "soil",
-        description: "Nematode bio-control. Apply to moist soil, not foliage.",
+        description: "Bio-nematicide fungus. Apply 200-400g/acre as soil drench to MOIST soil. Week 1: apply weekly for colonization. Month 2+: bi-weekly. After 12 months: monthly.",
         conflictsWith: ["Neem Oil Spray", "Trichoderma"],
         conflictGaps: { "Organic Iron Dust": 7, "Mustard Cake Water": 8, "Neem Khali": 5, "Trichoderma": 7, "Haldi Powder Spray": 5, "Saaf Fungicide (Carbendazim + Mancozeb)": 14 },
-        warning: "Keep 5-7 days gap from Iron, 7-10 days from Mustard Cake; alternate with Trichoderma; avoid chemical fungicides for 14d"
+        warning: "Alternate with Trichoderma (don't apply same day). Carbendazim is HIGHLY toxic to bio-agents - keep 14+ day gap from chemical fungicides"
     },
     {
         name: "Trichoderma",
-        frequency: 37,
-        offset: 44,
+        frequency: 28,
+        offset: 42,
         type: "soil",
-        description: "Beneficial fungi for soil health. Improves disease resistance.",
+        description: "Beneficial soil fungus. Apply to moist soil as drench. Improves disease resistance & nutrient uptake. Week 1-4: weekly. Month 2+: bi-weekly to monthly.",
         conflictsWith: ["Neem Oil Spray", "Paecilomyces lilacinus"],
         conflictGaps: { "Organic Iron Dust": 7, "Paecilomyces lilacinus": 7, "Haldi Powder Spray": 5, "Saaf Fungicide (Carbendazim + Mancozeb)": 14 },
-        warning: "Keep 5-7 days gap from Iron; alternate with Paecilomyces; avoid chemical fungicides for 14d"
+        warning: "Carbendazim shows only 12% compatibility - HIGHLY TOXIC to Trichoderma. Mancozeb is safer. Keep 14+ day gap from chemical fungicides"
     },
     {
         name: "Btk Bio Larvicide",
-        frequency: 14,
+        frequency: 10,
         offset: 5,
         type: "pest",
-        description: "Biological larvicide for caterpillars. Spray in evening, cover foliage thoroughly.",
+        description: "Bacillus thuringiensis for caterpillars. Apply when larvae are young (<5/8 inch). Spray evening, cover all foliage. For active infestation: every 5-7 days.",
         conflictsWith: ["Neem Oil Spray"],
         conflictGaps: { "Neem Oil Spray": 3 },
-        warning: "Apply when larvae are active. Reapply after rain."
+        warning: "Reapply after rain. Most effective on young larvae - apply when first noticed. Larvae must eat treated foliage to work"
     },
     {
         name: "Haldi Powder Spray",
-        frequency: 30,
+        frequency: 21,
         offset: 12,
         type: "pest",
-        description: "Mild antifungal/antibacterial. 2-3g turmeric powder/L with a drop of soap; spray at dusk.",
+        description: "Mild natural antifungal. 1-3 tsp (5-15g) turmeric powder per liter + drop of soap. Test on small area first. Apply at dusk. For infections: every 7-10 days.",
         conflictsWith: [],
         conflictGaps: { "Trichoderma": 5, "Paecilomyces lilacinus": 5 },
-        warning: "Light contact fungicide; keep a 5-day gap from Trichoderma/Paecilomyces."
+        warning: "May disrupt soil microbiome if overused. Keep 5-day gap from Trichoderma/Paecilomyces. Avoid excessive application"
     },
     {
         name: "Saaf Fungicide (Carbendazim + Mancozeb)",
         frequency: 45,
         offset: 18,
         type: "pest",
-        description: "Systemic+contact fungicide. 1-1.5g/L; use only when disease shows. Rotate modes to avoid resistance.",
+        description: "CHEMICAL fungicide - use ONLY when disease is visible. Systemic+contact action. 1-1.5g/L water. Rotate with other modes to prevent resistance.",
         conflictsWith: [],
         conflictGaps: { "Trichoderma": 14, "Paecilomyces lilacinus": 14 },
-        warning: "Chemical fungicide; wear PPE and avoid bloom sprays. Keep 14 days away from bio-agents."
+        warning: "⚠️ Carbendazim KILLS beneficial microbes (only 12% compatible with Trichoderma). Wear PPE. Avoid bloom sprays. Mandatory 14+ day gap before/after bio-agents"
     }
 ];
 
