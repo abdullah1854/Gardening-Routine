@@ -20,7 +20,8 @@ const routineItems = [
         frequency: 15,
         offset: 0,
         type: "fertilizer",
-        description: "Ferment 50g in 1L water for 48-72 hrs, then dilute 1:10 with water before use. Apply 100-200ml per plant on DRY soil (stop watering 1 day before). Water after application.",
+        description: "Start fermenting 50g in 1L water; it needs 48-72 hrs. Keep jar covered, stir daily. Dilute 1:10 before use on application day.",
+        applyNote: "Use the fermented mix: dilute 1:10 with water. Apply 100-200ml per plant on DRY soil (stop watering 1 day before). Water after application.",
         prepLeadDays: 2,
         prepNote: "Start fermenting 50g in 1L water; it needs 48-72 hrs. Keep jar covered, stir daily. Dilute 1:10 before use on application day.",
         conflictsWith: [],
@@ -1035,15 +1036,13 @@ function generateSchedule() {
             if (item.prepLeadDays && item.prepLeadDays > 0) {
                 const prepDate = new Date(currentDate);
                 prepDate.setDate(prepDate.getDate() - item.prepLeadDays);
-                if (prepDate >= startDate) {
-                    allEvents.push({
-                        date: prepDate,
-                        ...item,
-                        name: `${item.name} (Prep)`,
-                        description: item.prepNote || item.description,
-                        isPrep: true
-                    });
-                }
+                allEvents.push({
+                    date: prepDate,
+                    ...item,
+                    name: `${item.name} (Prep)`,
+                    description: item.prepNote || item.description,
+                    isPrep: true
+                });
             }
 
             currentDate.setDate(currentDate.getDate() + item.frequency);
@@ -1210,7 +1209,10 @@ function renderSchedule(resolvedEvents) {
 
             const desc = document.createElement('p');
             desc.className = 'event-description';
-            desc.textContent = event.description;
+            const displayDesc = event.isPrep
+                ? (event.prepNote || event.description)
+                : (event.applyNote || event.description);
+            desc.textContent = displayDesc;
 
             if (event.isPrep) {
                 contentBox.classList.add('is-prep');
