@@ -8,40 +8,103 @@
     <meta name="description" content="Smart fertilizer and care planning for your kitchen garden. Track 11 organic treatments with automatic conflict resolution.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
+    <!-- Skip to content for accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
     <div class="app-container">
         <!-- Header -->
         <header class="app-header">
-            <div class="header-brand">
-                <div class="logo">
-                    <svg class="logo-icon" width="36" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z" fill="#e8f5e9"/>
-                        <path d="M12 6c-1.5 0-3 1.5-3 4 0 1.5.5 2.5 1 3.5.5 1 1 2 1 3.5h2c0-1.5.5-2.5 1-3.5.5-1 1-2 1-3.5 0-2.5-1.5-4-3-4z" fill="#4caf50"/>
-                        <path d="M9 17h6v1c0 .55-.45 1-1 1h-4c-.55 0-1-.45-1-1v-1z" fill="#2e7d32"/>
-                        <path d="M12 6c-.83 0-1.5-.67-1.5-1.5S11.17 3 12 3s1.5.67 1.5 1.5S12.83 6 12 6z" fill="#81c784"/>
-                    </svg>
-                </div>
-                <div class="brand-text">
-                    <h1>Garden Care Scheduler</h1>
-                    <p class="tagline">Smart fertilizer & care planning</p>
+            <div class="header-left">
+                <div class="header-brand">
+                    <div class="logo">
+                        <svg class="logo-icon" width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="20" cy="20" r="20" fill="url(#logo-gradient)"/>
+                            <path d="M20 8c-2 0-4 2-4 5.5 0 2 .7 3.5 1.4 4.8.7 1.3 1.4 2.7 1.4 4.7h2.4c0-2 .7-3.4 1.4-4.7.7-1.3 1.4-2.8 1.4-4.8 0-3.5-2-5.5-4-5.5z" fill="white"/>
+                            <path d="M16 23h8v1.5c0 .8-.7 1.5-1.5 1.5h-5c-.8 0-1.5-.7-1.5-1.5V23z" fill="rgba(255,255,255,0.8)"/>
+                            <circle cx="20" cy="6" r="2" fill="rgba(255,255,255,0.6)"/>
+                            <path d="M13 14c2-2 4-2 5-1" stroke="rgba(255,255,255,0.4)" stroke-width="1.5" stroke-linecap="round"/>
+                            <path d="M27 14c-2-2-4-2-5-1" stroke="rgba(255,255,255,0.4)" stroke-width="1.5" stroke-linecap="round"/>
+                            <defs>
+                                <linearGradient id="logo-gradient" x1="0" y1="0" x2="40" y2="40">
+                                    <stop offset="0%" stop-color="#4ade80"/>
+                                    <stop offset="100%" stop-color="#22c55e"/>
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                    </div>
+                    <div class="brand-text">
+                        <h1>Garden Care</h1>
+                        <p class="tagline">Smart scheduling for healthy plants</p>
+                    </div>
                 </div>
             </div>
 
-            <div class="header-controls">
-                <div class="control-group date-group">
-                    <label for="start-date">Start Date</label>
-                    <div class="date-input-wrapper">
+            <div class="header-right">
+                <!-- Next Task Indicator -->
+                <div class="next-task-indicator" id="next-task-indicator">
+                    <span class="next-task-label">Next task</span>
+                    <span class="next-task-name" id="next-task-name">Loading...</span>
+                    <span class="next-task-date" id="next-task-date"></span>
+                </div>
+
+                <!-- Theme Toggle -->
+                <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
+                    <svg class="icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="5"/>
+                        <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+                    </svg>
+                    <svg class="icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
+                    </svg>
+                </button>
+
+                <!-- Settings Toggle -->
+                <button class="settings-toggle" id="settings-toggle" aria-label="Toggle settings">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="3"/>
+                        <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/>
+                    </svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- Settings Panel (Collapsible) -->
+        <div class="settings-panel" id="settings-panel">
+            <div class="settings-content">
+                <div class="settings-group">
+                    <label for="start-date">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                            <line x1="16" y1="2" x2="16" y2="6"/>
+                            <line x1="8" y1="2" x2="8" y2="6"/>
+                            <line x1="3" y1="10" x2="21" y2="10"/>
+                        </svg>
+                        Start Date
+                    </label>
+                    <div class="input-group">
                         <input type="date" id="start-date" value="2025-12-01">
-                        <button id="today-btn" class="btn-icon" title="Set to today">Today</button>
+                        <button id="today-btn" class="btn-today" title="Set to today">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <polyline points="12 6 12 12 16 14"/>
+                            </svg>
+                            Today
+                        </button>
                     </div>
                 </div>
 
-                <div class="control-group duration-group">
-                    <label for="duration">Duration</label>
+                <div class="settings-group">
+                    <label for="duration">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+                        </svg>
+                        Duration
+                    </label>
                     <select id="duration" class="duration-select">
                         <option value="3">3 Months</option>
                         <option value="6" selected>6 Months</option>
@@ -49,84 +112,222 @@
                     </select>
                 </div>
 
-                <div class="action-buttons">
+                <div class="settings-group">
+                    <label>View</label>
+                    <div class="view-toggle">
+                        <button class="view-btn active" data-view="list" title="List view">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="8" y1="6" x2="21" y2="6"/>
+                                <line x1="8" y1="12" x2="21" y2="12"/>
+                                <line x1="8" y1="18" x2="21" y2="18"/>
+                                <line x1="3" y1="6" x2="3.01" y2="6"/>
+                                <line x1="3" y1="12" x2="3.01" y2="12"/>
+                                <line x1="3" y1="18" x2="3.01" y2="18"/>
+                            </svg>
+                        </button>
+                        <button class="view-btn" data-view="calendar" title="Calendar view">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                                <line x1="16" y1="2" x2="16" y2="6"/>
+                                <line x1="8" y1="2" x2="8" y2="6"/>
+                                <line x1="3" y1="10" x2="21" y2="10"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="settings-actions">
                     <button id="generate-btn" class="btn btn-primary">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
                         </svg>
-                        Generate
+                        Generate Schedule
                     </button>
-                    <button id="print-btn" class="btn btn-secondary">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2M6 14h12v8H6v-8z"/>
-                        </svg>
-                        Print
-                    </button>
-                    <button id="export-btn" class="btn btn-secondary">
+                    <button id="export-btn" class="btn btn-secondary" title="Export to calendar">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/>
                         </svg>
                         Export
                     </button>
+                    <button id="print-btn" class="btn btn-icon" title="Print schedule">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2M6 14h12v8H6v-8z"/>
+                        </svg>
+                    </button>
                 </div>
             </div>
-        </header>
+        </div>
 
-        <!-- Stats Bar -->
-        <div class="stats-bar">
-            <div class="stat-item">
-                <span class="stat-value" id="total-events">0</span>
-                <span class="stat-label">Total Tasks</span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-value" id="items-tracked">11</span>
-                <span class="stat-label">Items Tracked</span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-value" id="conflicts-resolved">0</span>
-                <span class="stat-label">Conflicts Resolved</span>
+        <!-- Filter Bar -->
+        <div class="filter-bar">
+            <div class="filter-bar-content">
+                <div class="filter-chips">
+                    <label class="filter-chip" data-type="fertilizer">
+                        <input type="checkbox" checked data-filter="fertilizer">
+                        <span class="chip-icon">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                            </svg>
+                        </span>
+                        <span class="chip-label">Fertilizers</span>
+                        <span class="chip-count" id="count-fertilizer">0</span>
+                    </label>
+                    <label class="filter-chip" data-type="pest">
+                        <input type="checkbox" checked data-filter="pest">
+                        <span class="chip-icon">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                            </svg>
+                        </span>
+                        <span class="chip-label">Pest Control</span>
+                        <span class="chip-count" id="count-pest">0</span>
+                    </label>
+                    <label class="filter-chip" data-type="soil">
+                        <input type="checkbox" checked data-filter="soil">
+                        <span class="chip-icon">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <ellipse cx="12" cy="5" rx="9" ry="3"/>
+                                <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/>
+                                <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>
+                            </svg>
+                        </span>
+                        <span class="chip-label">Soil Health</span>
+                        <span class="chip-count" id="count-soil">0</span>
+                    </label>
+                    <label class="filter-chip" data-type="supplement">
+                        <input type="checkbox" checked data-filter="supplement">
+                        <span class="chip-icon">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+                                <polyline points="14 2 14 8 20 8"/>
+                                <line x1="12" y1="18" x2="12" y2="12"/>
+                                <line x1="9" y1="15" x2="15" y2="15"/>
+                            </svg>
+                        </span>
+                        <span class="chip-label">Supplements</span>
+                        <span class="chip-count" id="count-supplement">0</span>
+                    </label>
+                </div>
+
+                <div class="filter-stats">
+                    <div class="stat-pill">
+                        <span class="stat-value" id="total-events">0</span>
+                        <span class="stat-label">tasks</span>
+                    </div>
+                    <div class="stat-pill accent">
+                        <span class="stat-value" id="conflicts-resolved">0</span>
+                        <span class="stat-label">resolved</span>
+                    </div>
+                </div>
             </div>
         </div>
 
         <!-- Main Layout -->
         <div class="app-layout">
             <!-- Sidebar -->
-            <aside class="sidebar">
-                <!-- Filters -->
-                <div class="sidebar-section">
-                    <h3 class="sidebar-title">Filter by Category</h3>
-                    <div class="filter-list">
-                        <label class="filter-item">
-                            <input type="checkbox" checked data-filter="fertilizer">
-                            <span class="filter-color color-fertilizer"></span>
-                            <span class="filter-label">Fertilizers</span>
-                            <span class="filter-count">2</span>
-                        </label>
-                        <label class="filter-item">
-                            <input type="checkbox" checked data-filter="pest">
-                            <span class="filter-color color-pest"></span>
-                            <span class="filter-label">Pest Control</span>
-                            <span class="filter-count">1</span>
-                        </label>
-                        <label class="filter-item">
-                            <input type="checkbox" checked data-filter="soil">
-                            <span class="filter-color color-soil"></span>
-                            <span class="filter-label">Soil Health</span>
-                            <span class="filter-count">4</span>
-                        </label>
-                        <label class="filter-item">
-                            <input type="checkbox" checked data-filter="supplement">
-                            <span class="filter-color color-supplement"></span>
-                            <span class="filter-label">Supplements</span>
-                            <span class="filter-count">4</span>
-                        </label>
+            <aside class="sidebar" id="sidebar">
+                <!-- Calendar Heatmap -->
+                <div class="sidebar-card">
+                    <div class="card-header">
+                        <h3>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                                <line x1="16" y1="2" x2="16" y2="6"/>
+                                <line x1="8" y1="2" x2="8" y2="6"/>
+                                <line x1="3" y1="10" x2="21" y2="10"/>
+                            </svg>
+                            Activity Overview
+                        </h3>
+                    </div>
+                    <div class="calendar-heatmap" id="calendar-heatmap">
+                        <!-- Generated by JS -->
+                    </div>
+                    <div class="heatmap-legend">
+                        <span class="legend-label">Less</span>
+                        <div class="legend-scale">
+                            <span class="legend-item level-0"></span>
+                            <span class="legend-item level-1"></span>
+                            <span class="legend-item level-2"></span>
+                            <span class="legend-item level-3"></span>
+                        </div>
+                        <span class="legend-label">More</span>
+                    </div>
+                </div>
+
+                <!-- Insights -->
+                <div class="sidebar-card">
+                    <div class="card-header">
+                        <h3>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+                            </svg>
+                            Insights
+                        </h3>
+                    </div>
+                    <div class="insights-list" id="insights-list">
+                        <!-- Generated by JS -->
+                    </div>
+                </div>
+
+                <!-- Quick Tips -->
+                <div class="sidebar-card collapsible">
+                    <button class="card-header clickable" aria-expanded="false">
+                        <h3>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/>
+                                <line x1="12" y1="17" x2="12.01" y2="17"/>
+                            </svg>
+                            Quick Tips
+                        </h3>
+                        <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"/>
+                        </svg>
+                    </button>
+                    <div class="card-content collapsed">
+                        <ul class="tips-list">
+                            <li>
+                                <span class="tip-icon">💧</span>
+                                Always apply fertilizers on wet soil
+                            </li>
+                            <li>
+                                <span class="tip-icon">🌙</span>
+                                Spray neem oil in evening only
+                            </li>
+                            <li>
+                                <span class="tip-icon">📅</span>
+                                Keep 10-15 days gap between Mustard Cake & Neem Khali
+                            </li>
+                            <li>
+                                <span class="tip-icon">🔬</span>
+                                Iron needs 7-10 day gaps from most items
+                            </li>
+                            <li>
+                                <span class="tip-icon">🚫</span>
+                                Avoid chemical pesticides with bio-agents
+                            </li>
+                        </ul>
                     </div>
                 </div>
 
                 <!-- Ideal Schedule Reference -->
-                <div class="sidebar-section">
-                    <details class="ideal-schedule" open>
-                        <summary class="sidebar-title clickable">Ideal Monthly Schedule</summary>
+                <div class="sidebar-card collapsible">
+                    <button class="card-header clickable" aria-expanded="false">
+                        <h3>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+                                <polyline points="14 2 14 8 20 8"/>
+                                <line x1="16" y1="13" x2="8" y2="13"/>
+                                <line x1="16" y1="17" x2="8" y2="17"/>
+                                <polyline points="10 9 9 9 8 9"/>
+                            </svg>
+                            Ideal Monthly Schedule
+                        </h3>
+                        <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"/>
+                        </svg>
+                    </button>
+                    <div class="card-content collapsed">
                         <div class="schedule-ref">
                             <div class="ref-item">
                                 <span class="ref-week">Week 1</span>
@@ -154,36 +355,122 @@
                                 <span class="ref-task">Neem Khali / Bone Meal</span>
                             </div>
                         </div>
-                    </details>
-                </div>
-
-                <!-- Quick Tips -->
-                <div class="sidebar-section">
-                    <details class="quick-tips">
-                        <summary class="sidebar-title clickable">Quick Tips</summary>
-                        <ul class="tips-list">
-                            <li>Always apply fertilizers on wet soil</li>
-                            <li>Spray neem oil in evening only</li>
-                            <li>Keep 10-15 days gap between Mustard Cake & Neem Khali</li>
-                            <li>Iron needs 7-10 day gaps from most items</li>
-                            <li>Avoid chemical pesticides with bio-agents</li>
-                        </ul>
-                    </details>
+                    </div>
                 </div>
             </aside>
 
             <!-- Main Content -->
-            <main class="main-content">
-                <div id="schedule-container" class="schedule-grid">
-                    <!-- Schedule will be generated here -->
+            <main class="main-content" id="main-content">
+                <!-- Calendar View (hidden by default) -->
+                <div class="calendar-view hidden" id="calendar-view">
+                    <!-- Generated by JS -->
+                </div>
+
+                <!-- List View -->
+                <div class="list-view" id="list-view">
+                    <div id="schedule-container" class="schedule-grid">
+                        <!-- Schedule will be generated here -->
+                    </div>
+                </div>
+
+                <!-- Empty State -->
+                <div class="empty-state hidden" id="empty-state">
+                    <div class="empty-illustration">
+                        <svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="60" cy="60" r="50" fill="var(--empty-bg)" stroke="var(--empty-border)" stroke-width="2"/>
+                            <path d="M60 30c-8 0-16 8-16 22 0 8 2.8 14 5.6 19.2 2.8 5.2 5.6 10.8 5.6 18.8h9.6c0-8 2.8-13.6 5.6-18.8 2.8-5.2 5.6-11.2 5.6-19.2 0-14-8-22-16-22z" fill="var(--empty-plant)"/>
+                            <path d="M44 90h32v6c0 3.3-2.7 6-6 6H50c-3.3 0-6-2.7-6-6v-6z" fill="var(--empty-pot)"/>
+                        </svg>
+                    </div>
+                    <h3>No tasks match your filters</h3>
+                    <p>Try adjusting your category filters to see scheduled tasks</p>
                 </div>
             </main>
         </div>
 
         <!-- Footer -->
         <footer class="app-footer">
-            <p>Based on Kitchen Garden Fertilizer Guide | <a href="https://github.com" target="_blank">View on GitHub</a></p>
+            <div class="footer-content">
+                <p>Based on Kitchen Garden Fertilizer Guide</p>
+                <div class="footer-links">
+                    <a href="https://github.com" target="_blank" rel="noopener">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+                        </svg>
+                        GitHub
+                    </a>
+                    <span class="separator">|</span>
+                    <button class="keyboard-hint" id="keyboard-hint">
+                        <kbd>?</kbd> Keyboard shortcuts
+                    </button>
+                </div>
+            </div>
         </footer>
+
+        <!-- Keyboard Shortcuts Modal -->
+        <div class="modal-overlay hidden" id="shortcuts-modal">
+            <div class="modal" role="dialog" aria-labelledby="shortcuts-title">
+                <div class="modal-header">
+                    <h2 id="shortcuts-title">Keyboard Shortcuts</h2>
+                    <button class="modal-close" aria-label="Close modal">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="18" y1="6" x2="6" y2="18"/>
+                            <line x1="6" y1="6" x2="18" y2="18"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="modal-content">
+                    <div class="shortcut-group">
+                        <h3>Navigation</h3>
+                        <div class="shortcut-item">
+                            <span class="shortcut-keys"><kbd>T</kbd></span>
+                            <span class="shortcut-desc">Jump to today</span>
+                        </div>
+                        <div class="shortcut-item">
+                            <span class="shortcut-keys"><kbd>G</kbd></span>
+                            <span class="shortcut-desc">Generate schedule</span>
+                        </div>
+                        <div class="shortcut-item">
+                            <span class="shortcut-keys"><kbd>S</kbd></span>
+                            <span class="shortcut-desc">Toggle settings</span>
+                        </div>
+                    </div>
+                    <div class="shortcut-group">
+                        <h3>View</h3>
+                        <div class="shortcut-item">
+                            <span class="shortcut-keys"><kbd>D</kbd></span>
+                            <span class="shortcut-desc">Toggle dark mode</span>
+                        </div>
+                        <div class="shortcut-item">
+                            <span class="shortcut-keys"><kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd> <kbd>4</kbd></span>
+                            <span class="shortcut-desc">Toggle category filters</span>
+                        </div>
+                    </div>
+                    <div class="shortcut-group">
+                        <h3>Actions</h3>
+                        <div class="shortcut-item">
+                            <span class="shortcut-keys"><kbd>E</kbd></span>
+                            <span class="shortcut-desc">Export to calendar</span>
+                        </div>
+                        <div class="shortcut-item">
+                            <span class="shortcut-keys"><kbd>P</kbd></span>
+                            <span class="shortcut-desc">Print schedule</span>
+                        </div>
+                        <div class="shortcut-item">
+                            <span class="shortcut-keys"><kbd>?</kbd></span>
+                            <span class="shortcut-desc">Show this help</span>
+                        </div>
+                        <div class="shortcut-item">
+                            <span class="shortcut-keys"><kbd>Esc</kbd></span>
+                            <span class="shortcut-desc">Close modal/panel</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Toast Container -->
+        <div class="toast-container" id="toast-container"></div>
     </div>
 
     <script src="script.js"></script>

@@ -1,11 +1,11 @@
-// Garden Care Scheduler - Complete Data Model with Gap-Based Conflict Resolution
-// Based on Kitchen Garden Fertilizer document
+// Garden Care Scheduler - Enhanced Modern UI
+// Complete Data Model with Gap-Based Conflict Resolution
 
 const routineItems = [
     {
         name: "Mustard Cake Water",
         frequency: 30,
-        offset: 0, // Week 1
+        offset: 0,
         type: "fertilizer",
         description: "Soak 24-48 hrs, dilute 1:3. Use on wet soil only.",
         conflictsWith: [],
@@ -15,7 +15,7 @@ const routineItems = [
     {
         name: "Seaweed Extract",
         frequency: 30,
-        offset: 7, // Week 2
+        offset: 7,
         type: "supplement",
         description: "Foliar spray or root drench (5-10ml/L). Growth hormones & micronutrients.",
         conflictsWith: [],
@@ -24,7 +24,7 @@ const routineItems = [
     {
         name: "Compost / Vermicompost",
         frequency: 30,
-        offset: 14, // Week 3
+        offset: 14,
         type: "soil",
         description: "Mix 2-3 handfuls into top soil. Water afterwards.",
         conflictsWith: [],
@@ -33,7 +33,7 @@ const routineItems = [
     {
         name: "PROM Granules",
         frequency: 60,
-        offset: 21, // Week 4 (Month 1, 3, 5...)
+        offset: 21,
         type: "fertilizer",
         description: "Mix into soil. Phosphate-rich organic manure for flowering/fruiting.",
         conflictsWith: [],
@@ -42,7 +42,7 @@ const routineItems = [
     {
         name: "Neem Khali",
         frequency: 60,
-        offset: 51, // Week 4 (Month 2, 4, 6...) - Alternates with PROM
+        offset: 51,
         type: "soil",
         description: "Soil application for nematodes/fungus. Mix into top 1-2 inches.",
         conflictsWith: [],
@@ -52,7 +52,7 @@ const routineItems = [
     {
         name: "Bone Meal",
         frequency: 90,
-        offset: 81, // Week 4 (Every 3rd month) - Optional/Seasonal
+        offset: 81,
         type: "supplement",
         description: "1-2 Tbsp mixed into soil. Slow-release phosphorus. Use if required.",
         conflictsWith: [],
@@ -60,7 +60,7 @@ const routineItems = [
     },
     {
         name: "Neem Oil Spray",
-        frequency: 7, // Weekly
+        frequency: 7,
         offset: 2,
         type: "pest",
         description: "Spray in evening. 5ml/L + liquid soap. Covers both leaf sides.",
@@ -70,7 +70,7 @@ const routineItems = [
     {
         name: "Epsom Salt Spray",
         frequency: 30,
-        offset: 10, // Fits in Week 2 with Seaweed
+        offset: 10,
         type: "supplement",
         description: "Foliar spray (1 tbsp/L). Magnesium for lush green foliage.",
         conflictsWith: ["Neem Oil Spray"],
@@ -80,7 +80,7 @@ const routineItems = [
     {
         name: "Organic Iron Dust",
         frequency: 45,
-        offset: 25, // Floating schedule
+        offset: 25,
         type: "supplement",
         description: "Treats chlorosis. Soil or foliar application.",
         conflictsWith: [],
@@ -97,7 +97,7 @@ const routineItems = [
     {
         name: "Paecilomyces lilacinus",
         frequency: 45,
-        offset: 35, // Floating schedule
+        offset: 35,
         type: "soil",
         description: "Nematode bio-control. Apply to moist soil, not foliage.",
         conflictsWith: ["Neem Oil Spray"],
@@ -107,7 +107,7 @@ const routineItems = [
     {
         name: "Trichoderma",
         frequency: 45,
-        offset: 40, // Floating schedule
+        offset: 40,
         type: "soil",
         description: "Beneficial fungi for soil health. Improves disease resistance.",
         conflictsWith: ["Neem Oil Spray"],
@@ -116,13 +116,46 @@ const routineItems = [
     }
 ];
 
+// Icon SVGs for each type
+const typeIcons = {
+    fertilizer: '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>',
+    pest: '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>',
+    soil: '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>',
+    supplement: '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>'
+};
+
 // Global state
 let allGeneratedEvents = [];
 let conflictsResolved = 0;
+let currentView = 'list';
 const STORAGE_KEY = 'gardenSchedulerPrefs';
 
 // Initialize on DOM ready
 document.addEventListener('DOMContentLoaded', () => {
+    initializeApp();
+});
+
+function initializeApp() {
+    // Load preferences
+    loadPreferences();
+
+    // Initialize UI components
+    initTheme();
+    initSettingsPanel();
+    initFilters();
+    initCollapsibles();
+    initKeyboardShortcuts();
+    initModals();
+    initViewToggle();
+
+    // Bind event listeners
+    bindEventListeners();
+
+    // Generate initial schedule
+    generateSchedule();
+}
+
+function bindEventListeners() {
     const startDateInput = document.getElementById('start-date');
     const durationSelect = document.getElementById('duration');
     const generateBtn = document.getElementById('generate-btn');
@@ -130,29 +163,292 @@ document.addEventListener('DOMContentLoaded', () => {
     const todayBtn = document.getElementById('today-btn');
     const exportBtn = document.getElementById('export-btn');
 
-    // Load saved preferences or use defaults
-    loadPreferences();
+    generateBtn.addEventListener('click', () => {
+        generateSchedule();
+        showToast('Schedule generated successfully!', 'success');
+    });
 
-    // Event listeners
-    generateBtn.addEventListener('click', generateSchedule);
     printBtn.addEventListener('click', () => window.print());
+
     todayBtn.addEventListener('click', () => {
         startDateInput.valueAsDate = new Date();
         generateSchedule();
+        showToast('Start date set to today', 'info');
     });
+
     exportBtn.addEventListener('click', exportToICS);
 
-    // Auto-regenerate on changes
     startDateInput.addEventListener('change', generateSchedule);
     durationSelect.addEventListener('change', generateSchedule);
+}
 
-    // Initialize filters
-    initFilters();
+// Theme Management
+function initTheme() {
+    const themeToggle = document.getElementById('theme-toggle');
+    const savedTheme = localStorage.getItem('theme') || 'light';
 
-    // Generate initial schedule
-    generateSchedule();
-});
+    document.documentElement.setAttribute('data-theme', savedTheme);
 
+    themeToggle.addEventListener('click', () => {
+        const currentTheme = document.documentElement.getAttribute('data-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+
+        document.documentElement.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+
+        showToast(`${newTheme.charAt(0).toUpperCase() + newTheme.slice(1)} mode enabled`, 'info');
+    });
+}
+
+// Settings Panel
+function initSettingsPanel() {
+    const settingsToggle = document.getElementById('settings-toggle');
+    const settingsPanel = document.getElementById('settings-panel');
+
+    settingsToggle.addEventListener('click', () => {
+        settingsToggle.classList.toggle('active');
+        settingsPanel.classList.toggle('open');
+    });
+}
+
+// Filters
+function initFilters() {
+    const filterCheckboxes = document.querySelectorAll('[data-filter]');
+
+    filterCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', () => {
+            applyFilters();
+            savePreferences();
+        });
+    });
+}
+
+function applyFilters() {
+    const filters = {};
+    document.querySelectorAll('[data-filter]').forEach(cb => {
+        filters[cb.dataset.filter] = cb.checked;
+    });
+
+    let visibleCount = 0;
+    document.querySelectorAll('.event-card').forEach(card => {
+        const type = card.dataset.type;
+        const isVisible = filters[type];
+        card.style.display = isVisible ? '' : 'none';
+        if (isVisible) visibleCount++;
+    });
+
+    // Hide empty months
+    document.querySelectorAll('.month-block').forEach(block => {
+        const visibleEvents = block.querySelectorAll('.event-card:not([style*="display: none"])').length;
+        block.style.display = visibleEvents === 0 ? 'none' : '';
+    });
+
+    // Show/hide empty state
+    const emptyState = document.getElementById('empty-state');
+    const listView = document.getElementById('list-view');
+
+    if (visibleCount === 0) {
+        emptyState.classList.remove('hidden');
+        listView.classList.add('hidden');
+    } else {
+        emptyState.classList.add('hidden');
+        listView.classList.remove('hidden');
+    }
+}
+
+// Collapsible Sections
+function initCollapsibles() {
+    const collapsibleHeaders = document.querySelectorAll('.card-header.clickable');
+
+    collapsibleHeaders.forEach(header => {
+        header.addEventListener('click', () => {
+            const isExpanded = header.getAttribute('aria-expanded') === 'true';
+            header.setAttribute('aria-expanded', !isExpanded);
+
+            const content = header.nextElementSibling;
+            if (content) {
+                content.classList.toggle('collapsed');
+            }
+        });
+    });
+}
+
+// Keyboard Shortcuts
+function initKeyboardShortcuts() {
+    document.addEventListener('keydown', (e) => {
+        // Don't trigger shortcuts when typing in inputs
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT' || e.target.tagName === 'TEXTAREA') {
+            return;
+        }
+
+        const key = e.key.toLowerCase();
+
+        switch (key) {
+            case 't':
+                document.getElementById('today-btn').click();
+                break;
+            case 'g':
+                document.getElementById('generate-btn').click();
+                break;
+            case 's':
+                document.getElementById('settings-toggle').click();
+                break;
+            case 'd':
+                document.getElementById('theme-toggle').click();
+                break;
+            case 'e':
+                document.getElementById('export-btn').click();
+                break;
+            case 'p':
+                window.print();
+                break;
+            case '?':
+                toggleModal('shortcuts-modal');
+                break;
+            case 'escape':
+                closeAllModals();
+                closeSettingsPanel();
+                break;
+            case '1':
+            case '2':
+            case '3':
+            case '4':
+                toggleFilter(parseInt(key) - 1);
+                break;
+        }
+    });
+}
+
+function toggleFilter(index) {
+    const filters = document.querySelectorAll('[data-filter]');
+    if (filters[index]) {
+        filters[index].checked = !filters[index].checked;
+        applyFilters();
+        savePreferences();
+    }
+}
+
+// Modals
+function initModals() {
+    const keyboardHint = document.getElementById('keyboard-hint');
+    const shortcutsModal = document.getElementById('shortcuts-modal');
+
+    keyboardHint.addEventListener('click', () => {
+        toggleModal('shortcuts-modal');
+    });
+
+    // Close modal on overlay click
+    shortcutsModal.addEventListener('click', (e) => {
+        if (e.target === shortcutsModal) {
+            closeModal('shortcuts-modal');
+        }
+    });
+
+    // Close button
+    const closeBtn = shortcutsModal.querySelector('.modal-close');
+    closeBtn.addEventListener('click', () => {
+        closeModal('shortcuts-modal');
+    });
+}
+
+function toggleModal(modalId) {
+    const modal = document.getElementById(modalId);
+    modal.classList.toggle('hidden');
+}
+
+function closeModal(modalId) {
+    const modal = document.getElementById(modalId);
+    modal.classList.add('hidden');
+}
+
+function closeAllModals() {
+    document.querySelectorAll('.modal-overlay').forEach(modal => {
+        modal.classList.add('hidden');
+    });
+}
+
+function closeSettingsPanel() {
+    const settingsToggle = document.getElementById('settings-toggle');
+    const settingsPanel = document.getElementById('settings-panel');
+    settingsToggle.classList.remove('active');
+    settingsPanel.classList.remove('open');
+}
+
+// View Toggle
+function initViewToggle() {
+    const viewBtns = document.querySelectorAll('.view-btn');
+
+    viewBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const view = btn.dataset.view;
+            setView(view);
+        });
+    });
+}
+
+function setView(view) {
+    currentView = view;
+
+    // Update buttons
+    document.querySelectorAll('.view-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.view === view);
+    });
+
+    // Update views
+    const listView = document.getElementById('list-view');
+    const calendarView = document.getElementById('calendar-view');
+
+    if (view === 'list') {
+        listView.classList.remove('hidden');
+        calendarView.classList.add('hidden');
+    } else {
+        listView.classList.add('hidden');
+        calendarView.classList.remove('hidden');
+        renderCalendarView();
+    }
+}
+
+// Toast Notifications
+function showToast(message, type = 'info') {
+    const container = document.getElementById('toast-container');
+
+    const toast = document.createElement('div');
+    toast.className = `toast ${type}`;
+
+    const iconSvg = type === 'success'
+        ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>'
+        : type === 'error'
+        ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>'
+        : '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>';
+
+    toast.innerHTML = `
+        <span class="toast-icon">${iconSvg}</span>
+        <span class="toast-message">${message}</span>
+        <button class="toast-close" aria-label="Close">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="18" y1="6" x2="6" y2="18"/>
+                <line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+        </button>
+    `;
+
+    container.appendChild(toast);
+
+    // Close button
+    toast.querySelector('.toast-close').addEventListener('click', () => {
+        toast.remove();
+    });
+
+    // Auto remove
+    setTimeout(() => {
+        if (toast.parentNode) {
+            toast.style.animation = 'fadeOut 0.3s ease forwards';
+            setTimeout(() => toast.remove(), 300);
+        }
+    }, 4000);
+}
+
+// Preferences
 function loadPreferences() {
     const startDateInput = document.getElementById('start-date');
     const durationSelect = document.getElementById('duration');
@@ -174,11 +470,9 @@ function loadPreferences() {
                 });
             }
         } catch (e) {
-            // Use defaults if parsing fails
             startDateInput.value = '2025-12-01';
         }
     } else {
-        // Default: December 1st, 2025
         startDateInput.value = '2025-12-01';
     }
 }
@@ -197,47 +491,16 @@ function savePreferences() {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(prefs));
 }
 
-function initFilters() {
-    const filterCheckboxes = document.querySelectorAll('[data-filter]');
-
-    filterCheckboxes.forEach(checkbox => {
-        checkbox.addEventListener('change', () => {
-            applyFilters();
-            savePreferences();
-        });
-    });
-}
-
-function applyFilters() {
-    const filters = {};
-    document.querySelectorAll('[data-filter]').forEach(cb => {
-        filters[cb.dataset.filter] = cb.checked;
-    });
-
-    document.querySelectorAll('.event-card').forEach(card => {
-        const type = card.dataset.type;
-        card.style.display = filters[type] ? '' : 'none';
-    });
-
-    // Hide empty months
-    document.querySelectorAll('.month-block').forEach(block => {
-        const visibleEvents = block.querySelectorAll('.event-card:not([style*="display: none"])').length;
-        block.style.display = visibleEvents === 0 ? 'none' : '';
-    });
-}
-
-// Priority scoring for scheduling - items with more constraints scheduled first
+// Schedule Generation
 function getConstraintScore(item) {
     const gapCount = Object.keys(item.conflictGaps || {}).length;
     const conflictCount = (item.conflictsWith || []).length;
     return gapCount * 2 + conflictCount;
 }
 
-// Check for gap-based conflicts
 function hasGapConflict(event, dateMap, proposedDate) {
     const eventGaps = event.conflictGaps || {};
 
-    // Check this event's gap requirements against existing events
     for (const [conflictName, gapDays] of Object.entries(eventGaps)) {
         for (let dayOffset = -gapDays; dayOffset <= gapDays; dayOffset++) {
             const checkDate = new Date(proposedDate);
@@ -258,7 +521,6 @@ function hasGapConflict(event, dateMap, proposedDate) {
         }
     }
 
-    // Check reverse - other items that have gap requirements for this event
     for (const [dateStr, events] of dateMap.entries()) {
         for (const existing of events) {
             const existingGaps = existing.conflictGaps || {};
@@ -280,7 +542,6 @@ function hasGapConflict(event, dateMap, proposedDate) {
         }
     }
 
-    // Check same-day conflicts (original logic)
     const sameDayEvents = dateMap.get(proposedDate.toDateString()) || [];
     for (const existing of sameDayEvents) {
         if ((event.conflictsWith || []).includes(existing.name) ||
@@ -304,14 +565,12 @@ function generateSchedule() {
     const endDate = new Date(startDate);
     endDate.setMonth(endDate.getMonth() + duration);
 
-    // Sort items by constraint score (most constrained first)
     const sortedItems = [...routineItems].sort(
         (a, b) => getConstraintScore(b) - getConstraintScore(a)
     );
 
     let allEvents = [];
 
-    // 1. Generate base events
     sortedItems.forEach(item => {
         let currentDate = new Date(startDate);
         currentDate.setDate(currentDate.getDate() + item.offset);
@@ -325,10 +584,8 @@ function generateSchedule() {
         }
     });
 
-    // 2. Sort by date first to process in order
     allEvents.sort((a, b) => a.date - b.date);
 
-    // 3. Resolve Conflicts with gap-based detection
     const resolvedEvents = [];
     const dateMap = new Map();
 
@@ -341,7 +598,6 @@ function generateSchedule() {
             const conflictResult = hasGapConflict(event, dateMap, eventDate);
 
             if (!conflictResult.hasConflict) {
-                // Place it here
                 const dateStr = eventDate.toDateString();
                 if (!dateMap.has(dateStr)) {
                     dateMap.set(dateStr, []);
@@ -356,13 +612,11 @@ function generateSchedule() {
                     conflictsResolved++;
                 }
             } else {
-                // Move to next day
                 eventDate.setDate(eventDate.getDate() + 1);
                 attempts++;
             }
         }
 
-        // If still not placed after 20 attempts, place anyway with warning
         if (!placed) {
             const dateStr = eventDate.toDateString();
             if (!dateMap.has(dateStr)) {
@@ -376,21 +630,22 @@ function generateSchedule() {
         }
     });
 
-    // Store for export
     allGeneratedEvents = resolvedEvents;
 
-    // 4. Render
     renderSchedule(resolvedEvents);
     updateStats(resolvedEvents);
+    updateFilterCounts(resolvedEvents);
     applyFilters();
     markTodayEvents();
+    updateNextTask(resolvedEvents);
+    renderHeatmap(resolvedEvents, startDate, duration);
+    renderInsights(resolvedEvents);
     savePreferences();
 }
 
 function renderSchedule(resolvedEvents) {
     const scheduleContainer = document.getElementById('schedule-container');
 
-    // Group by Month
     const eventsByMonth = {};
     resolvedEvents.sort((a, b) => a.date - b.date);
 
@@ -402,9 +657,11 @@ function renderSchedule(resolvedEvents) {
         eventsByMonth[monthKey].push(event);
     });
 
+    let monthIndex = 0;
     for (const [month, events] of Object.entries(eventsByMonth)) {
         const monthBlock = document.createElement('div');
         monthBlock.className = 'month-block';
+        monthBlock.style.animationDelay = `${monthIndex * 50}ms`;
 
         const monthHeader = document.createElement('div');
         monthHeader.className = 'month-header';
@@ -423,11 +680,12 @@ function renderSchedule(resolvedEvents) {
         const eventList = document.createElement('div');
         eventList.className = 'event-list';
 
-        events.forEach(event => {
+        events.forEach((event, eventIndex) => {
             const eventCard = document.createElement('div');
             eventCard.className = 'event-card';
             eventCard.dataset.type = event.type;
             eventCard.dataset.date = event.date.toISOString();
+            eventCard.style.animationDelay = `${eventIndex * 30}ms`;
 
             // Date column
             const dateCol = document.createElement('div');
@@ -453,13 +711,13 @@ function renderSchedule(resolvedEvents) {
             const contentBox = document.createElement('div');
             contentBox.className = `event-content type-${event.type}`;
 
-            // Meta row (type badge + frequency)
+            // Meta row
             const metaRow = document.createElement('div');
             metaRow.className = 'event-meta';
 
             const typeBadge = document.createElement('span');
             typeBadge.className = `type-badge badge-${event.type}`;
-            typeBadge.textContent = getTypeLabel(event.type);
+            typeBadge.innerHTML = `${typeIcons[event.type]} ${getTypeLabel(event.type)}`;
 
             const freqLabel = document.createElement('span');
             freqLabel.className = 'freq-label';
@@ -478,7 +736,6 @@ function renderSchedule(resolvedEvents) {
             contentBox.appendChild(title);
             contentBox.appendChild(desc);
 
-            // Warning box
             if (event.warning) {
                 const warning = document.createElement('div');
                 warning.className = 'warning-box';
@@ -486,7 +743,6 @@ function renderSchedule(resolvedEvents) {
                 contentBox.appendChild(warning);
             }
 
-            // Rescheduled indicator
             if (event.wasRescheduled) {
                 const rescheduled = document.createElement('div');
                 rescheduled.className = 'rescheduled-badge';
@@ -501,6 +757,7 @@ function renderSchedule(resolvedEvents) {
 
         monthBlock.appendChild(eventList);
         scheduleContainer.appendChild(monthBlock);
+        monthIndex++;
     }
 }
 
@@ -516,8 +773,22 @@ function getTypeLabel(type) {
 
 function updateStats(events) {
     document.getElementById('total-events').textContent = events.length;
-    document.getElementById('items-tracked').textContent = routineItems.length;
     document.getElementById('conflicts-resolved').textContent = conflictsResolved;
+}
+
+function updateFilterCounts(events) {
+    const counts = { fertilizer: 0, pest: 0, soil: 0, supplement: 0 };
+
+    events.forEach(event => {
+        counts[event.type]++;
+    });
+
+    Object.entries(counts).forEach(([type, count]) => {
+        const countEl = document.getElementById(`count-${type}`);
+        if (countEl) {
+            countEl.textContent = count;
+        }
+    });
 }
 
 function markTodayEvents() {
@@ -534,10 +805,155 @@ function markTodayEvents() {
     });
 }
 
-// ICS Calendar Export
+function updateNextTask(events) {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const futureEvents = events
+        .filter(e => e.date >= today)
+        .sort((a, b) => a.date - b.date);
+
+    const nextTask = futureEvents[0];
+    const nameEl = document.getElementById('next-task-name');
+    const dateEl = document.getElementById('next-task-date');
+
+    if (nextTask) {
+        nameEl.textContent = nextTask.name;
+
+        const diffDays = Math.ceil((nextTask.date - today) / (1000 * 60 * 60 * 24));
+        if (diffDays === 0) {
+            dateEl.textContent = 'Today';
+        } else if (diffDays === 1) {
+            dateEl.textContent = 'Tomorrow';
+        } else {
+            dateEl.textContent = `In ${diffDays} days`;
+        }
+    } else {
+        nameEl.textContent = 'No upcoming tasks';
+        dateEl.textContent = '';
+    }
+}
+
+// Heatmap
+function renderHeatmap(events, startDate, durationMonths) {
+    const heatmapContainer = document.getElementById('calendar-heatmap');
+    heatmapContainer.innerHTML = '';
+
+    const eventCounts = {};
+    events.forEach(event => {
+        const dateStr = event.date.toDateString();
+        eventCounts[dateStr] = (eventCounts[dateStr] || 0) + 1;
+    });
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    // Show 8 weeks of heatmap
+    const weeksToShow = 8;
+    const daysToShow = weeksToShow * 7;
+
+    const currentDate = new Date(startDate);
+
+    for (let i = 0; i < daysToShow; i++) {
+        const day = document.createElement('div');
+        day.className = 'heatmap-day';
+
+        const dateStr = currentDate.toDateString();
+        const count = eventCounts[dateStr] || 0;
+
+        if (count === 1) day.classList.add('level-1');
+        else if (count === 2) day.classList.add('level-2');
+        else if (count >= 3) day.classList.add('level-3');
+
+        if (currentDate.toDateString() === today.toDateString()) {
+            day.classList.add('today');
+        }
+
+        // Tooltip
+        const tooltip = document.createElement('span');
+        tooltip.className = 'heatmap-day-label';
+        tooltip.textContent = `${currentDate.toLocaleDateString('default', { month: 'short', day: 'numeric' })}: ${count} task${count !== 1 ? 's' : ''}`;
+        day.appendChild(tooltip);
+
+        heatmapContainer.appendChild(day);
+        currentDate.setDate(currentDate.getDate() + 1);
+    }
+}
+
+// Insights
+function renderInsights(events) {
+    const insightsList = document.getElementById('insights-list');
+    insightsList.innerHTML = '';
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    // Find busiest month
+    const monthCounts = {};
+    events.forEach(event => {
+        const monthKey = event.date.toLocaleString('default', { month: 'long' });
+        monthCounts[monthKey] = (monthCounts[monthKey] || 0) + 1;
+    });
+
+    const busiestMonth = Object.entries(monthCounts)
+        .sort((a, b) => b[1] - a[1])[0];
+
+    // Find next 7 days tasks
+    const next7Days = events.filter(e => {
+        const diff = (e.date - today) / (1000 * 60 * 60 * 24);
+        return diff >= 0 && diff < 7;
+    }).length;
+
+    // Average tasks per week
+    const weeks = Math.ceil(events.length / (events.length > 0 ?
+        Math.ceil((events[events.length - 1].date - events[0].date) / (1000 * 60 * 60 * 24 * 7)) : 1));
+    const avgPerWeek = (events.length / Math.max(weeks, 1)).toFixed(1);
+
+    const insights = [
+        {
+            icon: 'primary',
+            emoji: '📊',
+            title: `${next7Days} tasks this week`,
+            desc: 'Upcoming in the next 7 days'
+        },
+        {
+            icon: 'warning',
+            emoji: '🔥',
+            title: `${busiestMonth ? busiestMonth[0] : 'N/A'} is busiest`,
+            desc: busiestMonth ? `${busiestMonth[1]} tasks scheduled` : 'No data'
+        },
+        {
+            icon: 'info',
+            emoji: '📈',
+            title: `~${avgPerWeek} tasks/week`,
+            desc: 'Average weekly workload'
+        }
+    ];
+
+    insights.forEach(insight => {
+        const item = document.createElement('div');
+        item.className = 'insight-item';
+        item.innerHTML = `
+            <div class="insight-icon ${insight.icon}">${insight.emoji}</div>
+            <div class="insight-content">
+                <p class="insight-title">${insight.title}</p>
+                <p class="insight-desc">${insight.desc}</p>
+            </div>
+        `;
+        insightsList.appendChild(item);
+    });
+}
+
+// Calendar View
+function renderCalendarView() {
+    const calendarView = document.getElementById('calendar-view');
+    calendarView.innerHTML = '<p style="padding: 20px; text-align: center; color: var(--text-secondary);">Calendar view coming soon!</p>';
+}
+
+// ICS Export
 function exportToICS() {
     if (allGeneratedEvents.length === 0) {
-        alert('No events to export. Please generate a schedule first.');
+        showToast('No events to export. Please generate a schedule first.', 'error');
         return;
     }
 
@@ -576,6 +992,8 @@ function exportToICS() {
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
+
+    showToast('Calendar exported successfully!', 'success');
 }
 
 function formatICSDate(date) {
@@ -592,3 +1010,13 @@ function escapeICS(text) {
         .replace(/,/g, '\\,')
         .replace(/\n/g, '\\n');
 }
+
+// Add fadeOut animation
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes fadeOut {
+        from { opacity: 1; transform: translateX(0); }
+        to { opacity: 0; transform: translateX(100%); }
+    }
+`;
+document.head.appendChild(style);
