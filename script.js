@@ -126,6 +126,16 @@ const routineItems = [
         conflictsWith: ["Neem Oil Spray"],
         conflictGaps: { "Organic Iron Dust": 7 },
         warning: "Keep 5-7 days gap from Iron"
+    },
+    {
+        name: "Btk Bio Larvicide",
+        frequency: 14,
+        offset: 5,
+        type: "pest",
+        description: "Biological larvicide for caterpillars. Spray in evening, cover foliage thoroughly.",
+        conflictsWith: ["Neem Oil Spray"],
+        conflictGaps: { "Neem Oil Spray": 3 },
+        warning: "Apply when larvae are active. Reapply after rain."
     }
 ];
 
@@ -431,8 +441,8 @@ function showToast(message, type = 'info') {
     const iconSvg = type === 'success'
         ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>'
         : type === 'error'
-        ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>'
-        : '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>';
+            ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>'
+            : '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>';
 
     toast.innerHTML = `
         <span class="toast-icon">${iconSvg}</span>

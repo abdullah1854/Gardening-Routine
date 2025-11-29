@@ -26,6 +26,7 @@ The schedule is built on a scientifically-backed rotation of organic fertilizers
 
 ### 🛡️ Pest Control
 *   **Neem Oil Spray**: Every 8 days — Spray in evening (5ml/L + liquid soap). Covers both leaf sides.
+*   **Btk Bio Larvicide**: Every 14 days — Biological larvicide for caterpillars. Spray in evening.
 
 ### 🌱 Soil Health
 *   **Compost / Vermicompost**: Every 22 days — Mix 2-3 handfuls into top soil. Water afterwards.

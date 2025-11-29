@@ -9,7 +9,11 @@
       "mcp__hostinger-mcp__hosting_listWebsitesV1",
       "mcp__hostinger-mcp__domains_getDomainDetailsV1",
       "mcp__hostinger-mcp__DNS_getDNSRecordsV1",
-      "mcp__hostinger-mcp__domains_updateDomainNameserversV1"
+      "mcp__hostinger-mcp__domains_updateDomainNameserversV1",
+      "mcp__hostinger-mcp__hosting_deployStaticWebsite",
+      "Bash(git checkout:*)",
+      "Bash(git restore:*)",
+      "WebSearch"
     ],
     "deny": [],
     "ask": []
