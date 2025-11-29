@@ -306,19 +306,19 @@ function applyFilters() {
 
 // Collapsible Sections
 function initCollapsibles() {
-    const collapsibleHeaders = document.querySelectorAll('.card-header.clickable');
+    // Initialize collapsible sections from the HTML onclick handlers
+    // The toggleSection function handles the actual toggling
+}
 
-    collapsibleHeaders.forEach(header => {
-        header.addEventListener('click', () => {
-            const isExpanded = header.getAttribute('aria-expanded') === 'true';
-            header.setAttribute('aria-expanded', !isExpanded);
+// Global toggle function for collapsible sections (called from HTML onclick)
+function toggleSection(header) {
+    const isExpanded = header.getAttribute('aria-expanded') === 'true';
+    header.setAttribute('aria-expanded', !isExpanded);
 
-            const content = header.nextElementSibling;
-            if (content) {
-                content.classList.toggle('collapsed');
-            }
-        });
-    });
+    const section = header.closest('.sidebar-section');
+    if (section) {
+        section.classList.toggle('expanded', !isExpanded);
+    }
 }
 
 // Keyboard Shortcuts
@@ -833,6 +833,13 @@ function getTypeLabel(type) {
 function updateStats(events) {
     document.getElementById('total-events').textContent = events.length;
     document.getElementById('conflicts-resolved').textContent = conflictsResolved;
+
+    // Update progress bar
+    const progressBar = document.getElementById('progress-bar');
+    if (progressBar && events.length > 0) {
+        const successRate = ((events.length - conflictsResolved) / events.length) * 100;
+        progressBar.style.width = `${Math.min(100, successRate + (conflictsResolved > 0 ? 10 : 0))}%`;
+    }
 }
 
 function updateFilterCounts(events) {
@@ -843,9 +850,16 @@ function updateFilterCounts(events) {
     });
 
     Object.entries(counts).forEach(([type, count]) => {
+        // Update filter checkbox counts
         const countEl = document.getElementById(`count-${type}`);
         if (countEl) {
             countEl.textContent = count;
+        }
+
+        // Update KPI cards
+        const kpiEl = document.getElementById(`kpi-${type}`);
+        if (kpiEl) {
+            kpiEl.textContent = count;
         }
     });
 }
@@ -880,9 +894,21 @@ function updateNextTask(events) {
     const nextTask = futureEvents[0];
     const nameEl = document.getElementById('next-task-name');
     const dateEl = document.getElementById('next-task-date');
+    const iconEl = document.getElementById('next-task-icon');
+    const cardEl = document.getElementById('next-task-indicator');
 
     if (nextTask) {
         nameEl.textContent = nextTask.name;
+
+        // Update icon based on type
+        if (iconEl) {
+            iconEl.innerHTML = getTaskTypeIcon(nextTask.type);
+        }
+
+        // Update card data-type for styling
+        if (cardEl) {
+            cardEl.setAttribute('data-type', nextTask.type);
+        }
 
         const eventDate = new Date(nextTask.date);
         const eventStr = `${eventDate.getFullYear()}-${String(eventDate.getMonth() + 1).padStart(2, '0')}-${String(eventDate.getDate()).padStart(2, '0')}`;
@@ -901,7 +927,22 @@ function updateNextTask(events) {
     } else {
         nameEl.textContent = 'No upcoming tasks';
         dateEl.textContent = '';
+        if (iconEl) {
+            iconEl.innerHTML = getTaskTypeIcon('default');
+        }
     }
+}
+
+// Get SVG icon for task type (larger version for next task card)
+function getTaskTypeIcon(type) {
+    const icons = {
+        fertilizer: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>',
+        pest: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>',
+        soil: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>',
+        supplement: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>',
+        default: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>'
+    };
+    return icons[type] || icons.default;
 }
 
 // Heatmap

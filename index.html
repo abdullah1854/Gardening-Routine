@@ -39,90 +39,106 @@
     <a href="#main-content" class="skip-link">Skip to main content</a>
 
     <div class="app-container">
-        <!-- Header -->
+        <!-- Header Row 1: Brand + Controls -->
         <header class="app-header">
-            <div class="header-left">
-                <div class="header-brand">
-                    <div class="logo">
-                        <svg class="logo-icon" width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="20" cy="20" r="20" fill="url(#logo-gradient)"/>
-                            <path d="M20 8c-2 0-4 2-4 5.5 0 2 .7 3.5 1.4 4.8.7 1.3 1.4 2.7 1.4 4.7h2.4c0-2 .7-3.4 1.4-4.7.7-1.3 1.4-2.8 1.4-4.8 0-3.5-2-5.5-4-5.5z" fill="white"/>
-                            <path d="M16 23h8v1.5c0 .8-.7 1.5-1.5 1.5h-5c-.8 0-1.5-.7-1.5-1.5V23z" fill="rgba(255,255,255,0.8)"/>
-                            <circle cx="20" cy="6" r="2" fill="rgba(255,255,255,0.6)"/>
-                            <path d="M13 14c2-2 4-2 5-1" stroke="rgba(255,255,255,0.4)" stroke-width="1.5" stroke-linecap="round"/>
-                            <path d="M27 14c-2-2-4-2-5-1" stroke="rgba(255,255,255,0.4)" stroke-width="1.5" stroke-linecap="round"/>
-                            <defs>
-                                <linearGradient id="logo-gradient" x1="0" y1="0" x2="40" y2="40">
-                                    <stop offset="0%" stop-color="#4ade80"/>
-                                    <stop offset="100%" stop-color="#22c55e"/>
-                                </linearGradient>
-                            </defs>
+            <div class="header-row">
+                <div class="header-left">
+                    <div class="header-brand">
+                        <div class="logo">
+                            <svg class="logo-icon" width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="20" cy="20" r="20" fill="url(#logo-gradient)"/>
+                                <path d="M20 8c-2 0-4 2-4 5.5 0 2 .7 3.5 1.4 4.8.7 1.3 1.4 2.7 1.4 4.7h2.4c0-2 .7-3.4 1.4-4.7.7-1.3 1.4-2.8 1.4-4.8 0-3.5-2-5.5-4-5.5z" fill="white"/>
+                                <path d="M16 23h8v1.5c0 .8-.7 1.5-1.5 1.5h-5c-.8 0-1.5-.7-1.5-1.5V23z" fill="rgba(255,255,255,0.8)"/>
+                                <circle cx="20" cy="6" r="2" fill="rgba(255,255,255,0.6)"/>
+                                <path d="M13 14c2-2 4-2 5-1" stroke="rgba(255,255,255,0.4)" stroke-width="1.5" stroke-linecap="round"/>
+                                <path d="M27 14c-2-2-4-2-5-1" stroke="rgba(255,255,255,0.4)" stroke-width="1.5" stroke-linecap="round"/>
+                                <defs>
+                                    <linearGradient id="logo-gradient" x1="0" y1="0" x2="40" y2="40">
+                                        <stop offset="0%" stop-color="#4ade80"/>
+                                        <stop offset="100%" stop-color="#22c55e"/>
+                                    </linearGradient>
+                                </defs>
+                            </svg>
+                        </div>
+                        <div class="brand-text">
+                            <h1>Siwan Kitchen Garden</h1>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="header-right">
+                    <!-- Theme Toggle -->
+                    <button class="icon-btn" id="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark mode (D)">
+                        <svg class="icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="5"/>
+                            <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
                         </svg>
-                    </div>
-                    <div class="brand-text">
-                        <h1>Siwan Kitchen Garden</h1>
-                        <p class="tagline">Smart scheduling for healthy plants</p>
-                    </div>
+                        <svg class="icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
+                        </svg>
+                    </button>
+
+                    <!-- Settings Toggle -->
+                    <button class="icon-btn" id="settings-toggle" aria-label="Toggle settings" title="Toggle settings (S)">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="3"/>
+                            <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/>
+                        </svg>
+                    </button>
                 </div>
-            </div>
-
-            <div class="header-right">
-                <!-- Next Task Indicator -->
-                <div class="next-task-indicator" id="next-task-indicator">
-                    <span class="next-task-label">Next task</span>
-                    <span class="next-task-name" id="next-task-name">Loading...</span>
-                    <span class="next-task-date" id="next-task-date"></span>
-                </div>
-
-                <!-- Theme Toggle -->
-                <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
-                    <svg class="icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <circle cx="12" cy="12" r="5"/>
-                        <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
-                    </svg>
-                    <svg class="icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
-                    </svg>
-                </button>
-
-                <!-- Settings Toggle -->
-                <button class="settings-toggle" id="settings-toggle" aria-label="Toggle settings">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <circle cx="12" cy="12" r="3"/>
-                        <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/>
-                    </svg>
-                </button>
             </div>
         </header>
 
-        <!-- Settings Panel (Collapsible) -->
-        <div class="settings-panel" id="settings-panel">
-            <div class="settings-content">
-                <div class="settings-group">
-                    <label for="start-date">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <!-- Header Row 2: Tagline + Next Task -->
+        <div class="subheader">
+            <div class="subheader-content">
+                <p class="tagline">Smart scheduling for healthy plants</p>
+
+                <!-- Next Task Card -->
+                <div class="next-task-card" id="next-task-indicator">
+                    <div class="next-task-icon" id="next-task-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                        </svg>
+                    </div>
+                    <div class="next-task-info">
+                        <span class="next-task-label">Next Task</span>
+                        <span class="next-task-name" id="next-task-name">Loading...</span>
+                    </div>
+                    <span class="next-task-badge" id="next-task-date">Today</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Unified Control Bar -->
+        <div class="control-bar">
+            <div class="control-bar-content">
+                <!-- Left: Date Controls -->
+                <div class="control-group">
+                    <label class="control-label" for="start-date">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
                             <line x1="16" y1="2" x2="16" y2="6"/>
                             <line x1="8" y1="2" x2="8" y2="6"/>
                             <line x1="3" y1="10" x2="21" y2="10"/>
                         </svg>
-                        Start Date
+                        Start
                     </label>
                     <div class="input-group">
-                        <input type="date" id="start-date">
-                        <button id="today-btn" class="btn-today" title="Set to today">
+                        <input type="date" id="start-date" class="date-input">
+                        <button id="today-btn" class="btn-icon-sm" title="Set to today (T)">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <circle cx="12" cy="12" r="10"/>
                                 <polyline points="12 6 12 12 16 14"/>
                             </svg>
-                            Today
                         </button>
                     </div>
                 </div>
 
-                <div class="settings-group">
-                    <label for="duration">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <!-- Middle: Duration -->
+                <div class="control-group">
+                    <label class="control-label" for="duration">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
                         </svg>
                         Duration
@@ -134,9 +150,9 @@
                     </select>
                 </div>
 
-                <div class="settings-group">
-                    <label>View</label>
-                    <div class="view-toggle">
+                <!-- Right: View Toggle + Actions -->
+                <div class="control-group control-actions">
+                    <div class="view-toggle-group">
                         <button class="view-btn active" data-view="list" title="List view">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <line x1="8" y1="6" x2="21" y2="6"/>
@@ -146,6 +162,7 @@
                                 <line x1="3" y1="12" x2="3.01" y2="12"/>
                                 <line x1="3" y1="18" x2="3.01" y2="18"/>
                             </svg>
+                            <span>List</span>
                         </button>
                         <button class="view-btn" data-view="calendar" title="Calendar view">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -154,71 +171,93 @@
                                 <line x1="8" y1="2" x2="8" y2="6"/>
                                 <line x1="3" y1="10" x2="21" y2="10"/>
                             </svg>
+                            <span>Calendar</span>
                         </button>
                     </div>
-                </div>
 
-                <div class="settings-actions">
-                    <button id="generate-btn" class="btn btn-primary">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
-                        </svg>
-                        Generate Schedule
-                    </button>
-                    <button id="export-btn" class="btn btn-secondary" title="Export to calendar">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/>
-                        </svg>
-                        Export
-                    </button>
-                    <button id="print-btn" class="btn btn-icon" title="Print schedule">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2M6 14h12v8H6v-8z"/>
-                        </svg>
-                    </button>
+                    <div class="action-buttons">
+                        <button id="generate-btn" class="btn btn-primary" title="Generate schedule (G)">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                            </svg>
+                            <span>Generate</span>
+                        </button>
+                        <button id="export-btn" class="btn btn-secondary" title="Export to calendar (E)">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+                            </svg>
+                            <span class="hide-mobile">Export</span>
+                        </button>
+                        <button id="print-btn" class="btn btn-icon" title="Print schedule (P)">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2M6 14h12v8H6v-8z"/>
+                            </svg>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- Filter Bar -->
-        <div class="filter-bar">
-            <div class="filter-bar-content">
-                <div class="filter-chips">
-                    <label class="filter-chip" data-type="fertilizer">
+        <!-- Settings Panel (Collapsible) -->
+        <div class="settings-panel" id="settings-panel">
+            <div class="settings-content">
+                <h3 class="settings-title">Filter by Category</h3>
+                <div class="filter-checkboxes">
+                    <label class="filter-checkbox" data-type="fertilizer">
                         <input type="checkbox" checked data-filter="fertilizer">
-                        <span class="chip-icon">
+                        <span class="checkbox-visual">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                        </span>
+                        <span class="checkbox-icon">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
                             </svg>
                         </span>
-                        <span class="chip-label">Fertilizers</span>
-                        <span class="chip-count" id="count-fertilizer">0</span>
+                        <span class="checkbox-label">Fertilizers</span>
+                        <span class="checkbox-count" id="count-fertilizer">0</span>
                     </label>
-                    <label class="filter-chip" data-type="pest">
+                    <label class="filter-checkbox" data-type="pest">
                         <input type="checkbox" checked data-filter="pest">
-                        <span class="chip-icon">
+                        <span class="checkbox-visual">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                        </span>
+                        <span class="checkbox-icon">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
                             </svg>
                         </span>
-                        <span class="chip-label">Pest Control</span>
-                        <span class="chip-count" id="count-pest">0</span>
+                        <span class="checkbox-label">Pest Control</span>
+                        <span class="checkbox-count" id="count-pest">0</span>
                     </label>
-                    <label class="filter-chip" data-type="soil">
+                    <label class="filter-checkbox" data-type="soil">
                         <input type="checkbox" checked data-filter="soil">
-                        <span class="chip-icon">
+                        <span class="checkbox-visual">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                        </span>
+                        <span class="checkbox-icon">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <ellipse cx="12" cy="5" rx="9" ry="3"/>
                                 <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/>
                                 <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>
                             </svg>
                         </span>
-                        <span class="chip-label">Soil Health</span>
-                        <span class="chip-count" id="count-soil">0</span>
+                        <span class="checkbox-label">Soil Health</span>
+                        <span class="checkbox-count" id="count-soil">0</span>
                     </label>
-                    <label class="filter-chip" data-type="supplement">
+                    <label class="filter-checkbox" data-type="supplement">
                         <input type="checkbox" checked data-filter="supplement">
-                        <span class="chip-icon">
+                        <span class="checkbox-visual">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                        </span>
+                        <span class="checkbox-icon">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
                                 <polyline points="14 2 14 8 20 8"/>
@@ -226,19 +265,78 @@
                                 <line x1="9" y1="15" x2="15" y2="15"/>
                             </svg>
                         </span>
-                        <span class="chip-label">Supplements</span>
-                        <span class="chip-count" id="count-supplement">0</span>
+                        <span class="checkbox-label">Supplements</span>
+                        <span class="checkbox-count" id="count-supplement">0</span>
                     </label>
                 </div>
+            </div>
+        </div>
 
-                <div class="filter-stats">
-                    <div class="stat-pill">
-                        <span class="stat-value" id="total-events">0</span>
-                        <span class="stat-label">tasks</span>
+        <!-- KPI Summary Row -->
+        <div class="kpi-bar">
+            <div class="kpi-bar-content">
+                <div class="kpi-cards">
+                    <div class="kpi-card kpi-fertilizer">
+                        <div class="kpi-icon">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                            </svg>
+                        </div>
+                        <div class="kpi-info">
+                            <span class="kpi-value" id="kpi-fertilizer">0</span>
+                            <span class="kpi-label">Fertilizers</span>
+                        </div>
                     </div>
-                    <div class="stat-pill accent">
-                        <span class="stat-value" id="conflicts-resolved">0</span>
-                        <span class="stat-label">resolved</span>
+                    <div class="kpi-card kpi-pest">
+                        <div class="kpi-icon">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                            </svg>
+                        </div>
+                        <div class="kpi-info">
+                            <span class="kpi-value" id="kpi-pest">0</span>
+                            <span class="kpi-label">Pest Control</span>
+                        </div>
+                    </div>
+                    <div class="kpi-card kpi-soil">
+                        <div class="kpi-icon">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <ellipse cx="12" cy="5" rx="9" ry="3"/>
+                                <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/>
+                                <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>
+                            </svg>
+                        </div>
+                        <div class="kpi-info">
+                            <span class="kpi-value" id="kpi-soil">0</span>
+                            <span class="kpi-label">Soil Health</span>
+                        </div>
+                    </div>
+                    <div class="kpi-card kpi-supplement">
+                        <div class="kpi-icon">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+                                <polyline points="14 2 14 8 20 8"/>
+                                <line x1="12" y1="18" x2="12" y2="12"/>
+                                <line x1="9" y1="15" x2="15" y2="15"/>
+                            </svg>
+                        </div>
+                        <div class="kpi-info">
+                            <span class="kpi-value" id="kpi-supplement">0</span>
+                            <span class="kpi-label">Supplements</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Progress Summary -->
+                <div class="progress-summary">
+                    <div class="progress-info">
+                        <span class="progress-label">Tasks Scheduled</span>
+                        <span class="progress-counts">
+                            <span id="conflicts-resolved">0</span> resolved / <span id="total-events">0</span> total
+                        </span>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" id="progress-bar" style="width: 0%"></div>
                     </div>
                 </div>
             </div>
@@ -248,107 +346,135 @@
         <div class="app-layout">
             <!-- Sidebar -->
             <aside class="sidebar" id="sidebar">
-                <!-- Calendar Heatmap -->
-                <div class="sidebar-card">
-                    <div class="card-header">
-                        <h3>
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <!-- Activity Overview (Heatmap) -->
+                <section class="sidebar-section">
+                    <div class="section-header">
+                        <h2>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
                                 <line x1="16" y1="2" x2="16" y2="6"/>
                                 <line x1="8" y1="2" x2="8" y2="6"/>
                                 <line x1="3" y1="10" x2="21" y2="10"/>
                             </svg>
                             Activity Overview
-                        </h3>
+                        </h2>
                     </div>
-                    <div class="calendar-heatmap" id="calendar-heatmap">
-                        <!-- Generated by JS -->
-                    </div>
-                    <div class="heatmap-legend">
-                        <span class="legend-label">Less</span>
-                        <div class="legend-scale">
-                            <span class="legend-item level-0"></span>
-                            <span class="legend-item level-1"></span>
-                            <span class="legend-item level-2"></span>
-                            <span class="legend-item level-3"></span>
+                    <div class="section-body">
+                        <div class="calendar-heatmap" id="calendar-heatmap">
+                            <!-- Generated by JS -->
                         </div>
-                        <span class="legend-label">More</span>
+                        <div class="heatmap-legend">
+                            <span class="legend-label">Less</span>
+                            <div class="legend-scale">
+                                <span class="legend-item level-0"></span>
+                                <span class="legend-item level-1"></span>
+                                <span class="legend-item level-2"></span>
+                                <span class="legend-item level-3"></span>
+                            </div>
+                            <span class="legend-label">More</span>
+                        </div>
                     </div>
-                </div>
+                </section>
 
                 <!-- Insights -->
-                <div class="sidebar-card">
-                    <div class="card-header">
-                        <h3>
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <section class="sidebar-section">
+                    <div class="section-header">
+                        <h2>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
                             </svg>
                             Insights
-                        </h3>
+                        </h2>
                     </div>
-                    <div class="insights-list" id="insights-list">
-                        <!-- Generated by JS -->
+                    <div class="section-body">
+                        <div class="insights-grid" id="insights-list">
+                            <!-- Generated by JS -->
+                        </div>
                     </div>
-                </div>
+                </section>
 
                 <!-- Quick Tips -->
-                <div class="sidebar-card collapsible">
-                    <button class="card-header clickable" aria-expanded="false">
-                        <h3>
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <section class="sidebar-section collapsible expanded" id="tips-section">
+                    <button class="section-header clickable" aria-expanded="true" onclick="toggleSection(this)">
+                        <h2>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <circle cx="12" cy="12" r="10"/>
                                 <path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/>
                                 <line x1="12" y1="17" x2="12.01" y2="17"/>
                             </svg>
-                            Quick Tips
-                        </h3>
-                        <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            Quick Tips for Safer Mixing
+                        </h2>
+                        <svg class="chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <polyline points="6 9 12 15 18 9"/>
                         </svg>
                     </button>
-                    <div class="card-content collapsed">
-                        <ul class="tips-list">
-                            <li>
-                                <span class="tip-icon">💧</span>
-                                Mustard Cake: Apply to DRY soil, then water. Ferment 48-72hrs, dilute 1:10
-                            </li>
-                            <li>
-                                <span class="tip-icon">🌙</span>
-                                Neem Oil & Btk: Evening only (prevents leaf burn, protects bees)
-                            </li>
-                            <li>
-                                <span class="tip-icon">📅</span>
-                                Keep 10-15 days gap between Mustard Cake & Neem Khali
-                            </li>
-                            <li>
-                                <span class="tip-icon">🔬</span>
-                                Iron conflicts with: Phosphorus (Bone Meal, PROM), Magnesium (Epsom Salt) - keep 7-10 day gaps
-                            </li>
-                            <li>
-                                <span class="tip-icon">⚠️</span>
-                                Carbendazim is HIGHLY TOXIC to Trichoderma (only 12% compatible) - 14+ day gap mandatory
-                            </li>
-                            <li>
-                                <span class="tip-icon">⏳</span>
-                                Alternate Paecilomyces & Trichoderma (never same day). Space Neem Oil & bio-agents by 3+ days
-                            </li>
-                            <li>
-                                <span class="tip-icon">🧤</span>
-                                Chemical fungicide (Saaf): PPE required, avoid blooms, 14-day gap from ALL bio-agents
-                            </li>
-                            <li>
-                                <span class="tip-icon">🌱</span>
-                                Seaweed Extract: Keep 4-5 day gap from chemical fertilizers for best absorption
-                            </li>
-                        </ul>
+                    <div class="section-body collapsible-content">
+                        <div class="tips-grid">
+                            <div class="tip-card">
+                                <span class="tip-emoji">💧</span>
+                                <div class="tip-content">
+                                    <strong>Mustard Cake</strong>
+                                    <p>Apply to DRY soil, then water. Ferment 48-72hrs, dilute 1:10</p>
+                                </div>
+                            </div>
+                            <div class="tip-card">
+                                <span class="tip-emoji">🌙</span>
+                                <div class="tip-content">
+                                    <strong>Neem Oil & Btk</strong>
+                                    <p>Evening only - prevents leaf burn, protects bees</p>
+                                </div>
+                            </div>
+                            <div class="tip-card">
+                                <span class="tip-emoji">📅</span>
+                                <div class="tip-content">
+                                    <strong>Timing Gap</strong>
+                                    <p>Keep 10-15 days gap between Mustard Cake & Neem Khali</p>
+                                </div>
+                            </div>
+                            <div class="tip-card">
+                                <span class="tip-emoji">🔬</span>
+                                <div class="tip-content">
+                                    <strong>Iron Conflicts</strong>
+                                    <p>Iron + Phosphorus/Magnesium = bad. Keep 7-10 day gaps</p>
+                                </div>
+                            </div>
+                            <div class="tip-card warning">
+                                <span class="tip-emoji">⚠️</span>
+                                <div class="tip-content">
+                                    <strong>Carbendazim Warning</strong>
+                                    <p>KILLS beneficial microbes (12% compatible). 14+ day gap mandatory</p>
+                                </div>
+                            </div>
+                            <div class="tip-card">
+                                <span class="tip-emoji">⏳</span>
+                                <div class="tip-content">
+                                    <strong>Bio-Agents</strong>
+                                    <p>Alternate Paecilomyces & Trichoderma. Never same day</p>
+                                </div>
+                            </div>
+                            <div class="tip-card">
+                                <span class="tip-emoji">🧤</span>
+                                <div class="tip-content">
+                                    <strong>Chemical Fungicide</strong>
+                                    <p>PPE required, avoid blooms, 14-day gap from bio-agents</p>
+                                </div>
+                            </div>
+                            <div class="tip-card">
+                                <span class="tip-emoji">🌱</span>
+                                <div class="tip-content">
+                                    <strong>Seaweed Extract</strong>
+                                    <p>Keep 4-5 day gap from chemical fertilizers</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
+                </section>
 
-                <!-- Ideal Schedule Reference -->
-                <div class="sidebar-card collapsible">
-                    <button class="card-header clickable" aria-expanded="false">
-                        <h3>
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <!-- Ideal Monthly Schedule -->
+                <section class="sidebar-section collapsible expanded" id="schedule-ref-section">
+                    <button class="section-header clickable" aria-expanded="true" onclick="toggleSection(this)">
+                        <h2>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
                                 <polyline points="14 2 14 8 20 8"/>
                                 <line x1="16" y1="13" x2="8" y2="13"/>
@@ -356,61 +482,94 @@
                                 <polyline points="10 9 9 9 8 9"/>
                             </svg>
                             Ideal Monthly Schedule
-                        </h3>
-                        <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        </h2>
+                        <svg class="chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <polyline points="6 9 12 15 18 9"/>
                         </svg>
                     </button>
-                    <div class="card-content collapsed">
-                        <div class="schedule-ref">
-                            <div class="ref-item">
-                                <span class="ref-week">Every 15d</span>
-                                <span class="ref-task">Mustard Cake Water (ferment, dilute 1:10, dry soil)</span>
+                    <div class="section-body collapsible-content">
+                        <div class="schedule-grid-ref">
+                            <div class="schedule-ref-item">
+                                <span class="ref-freq">Every 15d</span>
+                                <div class="ref-details">
+                                    <strong>Mustard Cake Water</strong>
+                                    <p>Ferment, dilute 1:10, dry soil</p>
+                                </div>
                             </div>
-                            <div class="ref-item">
-                                <span class="ref-week">Every 17d</span>
-                                <span class="ref-task">Seaweed Extract (5-10ml/L, morning/evening)</span>
+                            <div class="schedule-ref-item">
+                                <span class="ref-freq">Every 17d</span>
+                                <div class="ref-details">
+                                    <strong>Seaweed Extract</strong>
+                                    <p>5-10ml/L, morning/evening</p>
+                                </div>
                             </div>
-                            <div class="ref-item">
-                                <span class="ref-week">Every 21d</span>
-                                <span class="ref-task">Compost / Vermicompost (¼-½ cup per plant)</span>
+                            <div class="schedule-ref-item">
+                                <span class="ref-freq">Every 21d</span>
+                                <div class="ref-details">
+                                    <strong>Compost / Vermicompost</strong>
+                                    <p>¼-½ cup per plant</p>
+                                </div>
                             </div>
-                            <div class="ref-item">
-                                <span class="ref-week">Every 52d</span>
-                                <span class="ref-task">PROM Granules (flowering/fruiting stage)</span>
+                            <div class="schedule-ref-item">
+                                <span class="ref-freq">Every 52d</span>
+                                <div class="ref-details">
+                                    <strong>PROM Granules</strong>
+                                    <p>For flowering/fruiting stage</p>
+                                </div>
                             </div>
-                            <div class="ref-divider"></div>
-                            <div class="ref-item">
-                                <span class="ref-week">Every 10d</span>
-                                <span class="ref-task">Neem Oil (5ml/L) + Btk (10d) at dusk, space 3d apart</span>
+                            <div class="schedule-ref-divider"></div>
+                            <div class="schedule-ref-item">
+                                <span class="ref-freq">Every 10d</span>
+                                <div class="ref-details">
+                                    <strong>Neem Oil + Btk</strong>
+                                    <p>At dusk, space 3d apart</p>
+                                </div>
                             </div>
-                            <div class="ref-item">
-                                <span class="ref-week">Every 21d</span>
-                                <span class="ref-task">Haldi Powder spray (5-15g/L, natural fungicide)</span>
+                            <div class="schedule-ref-item">
+                                <span class="ref-freq">Every 21d</span>
+                                <div class="ref-details">
+                                    <strong>Haldi Powder</strong>
+                                    <p>5-15g/L, natural fungicide</p>
+                                </div>
                             </div>
-                            <div class="ref-item">
-                                <span class="ref-week">Every 28d</span>
-                                <span class="ref-task">Trichoderma / Paecilomyces (ALTERNATE, moist soil)</span>
+                            <div class="schedule-ref-item">
+                                <span class="ref-freq">Every 28d</span>
+                                <div class="ref-details">
+                                    <strong>Trichoderma / Paecilomyces</strong>
+                                    <p>ALTERNATE, moist soil</p>
+                                </div>
                             </div>
-                            <div class="ref-item">
-                                <span class="ref-week">Every 30d</span>
-                                <span class="ref-task">Neem Khali refresh (effect lasts ~30 days)</span>
+                            <div class="schedule-ref-item">
+                                <span class="ref-freq">Every 30d</span>
+                                <div class="ref-details">
+                                    <strong>Neem Khali</strong>
+                                    <p>Effect lasts ~30 days</p>
+                                </div>
                             </div>
-                            <div class="ref-item">
-                                <span class="ref-week">Every 60d</span>
-                                <span class="ref-task">Bone Meal (slow-release P), keep 14d gap from PROM</span>
+                            <div class="schedule-ref-item">
+                                <span class="ref-freq">Every 60d</span>
+                                <div class="ref-details">
+                                    <strong>Bone Meal</strong>
+                                    <p>Slow-release P, 14d gap from PROM</p>
+                                </div>
                             </div>
-                            <div class="ref-item">
-                                <span class="ref-week">Every 21-28d</span>
-                                <span class="ref-task">Epsom Salt (21d) & Organic Iron (28d), stagger 7d</span>
+                            <div class="schedule-ref-item">
+                                <span class="ref-freq">21-28d</span>
+                                <div class="ref-details">
+                                    <strong>Epsom Salt & Iron</strong>
+                                    <p>Stagger by 7 days</p>
+                                </div>
                             </div>
-                            <div class="ref-item">
-                                <span class="ref-week">Disease only</span>
-                                <span class="ref-task">Saaf Fungicide (45d max, 14d+ away from bio-agents!)</span>
+                            <div class="schedule-ref-item caution">
+                                <span class="ref-freq">Disease only</span>
+                                <div class="ref-details">
+                                    <strong>Saaf Fungicide</strong>
+                                    <p>45d max, 14d+ from bio-agents!</p>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </section>
             </aside>
 
             <!-- Main Content -->
@@ -422,7 +581,7 @@
 
                 <!-- List View -->
                 <div class="list-view" id="list-view">
-                    <div id="schedule-container" class="schedule-grid">
+                    <div id="schedule-container" class="schedule-container">
                         <!-- Schedule will be generated here -->
                     </div>
                 </div>
