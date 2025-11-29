@@ -163,16 +163,49 @@
         <!-- Header Row 2: Next Task Banner (Full Width) -->
         <div class="next-task-banner">
             <div class="next-task-banner-content">
-                <div class="next-task-card" id="next-task-indicator">
-                    <span class="next-task-dot" id="next-task-dot"></span>
-                    <div class="next-task-info">
-                        <span class="next-task-name" id="next-task-name">Loading...</span>
-                        <span class="next-task-meta">
-                            <span class="next-task-type" id="next-task-type">Fertilizer</span>
-                            <span class="next-task-freq" id="next-task-freq">Every 15 days</span>
-                        </span>
+                <div class="status-grid">
+                    <div class="next-task-card" id="next-task-indicator">
+                        <span class="next-task-dot" id="next-task-dot"></span>
+                        <div class="next-task-info">
+                            <span class="next-task-name" id="next-task-name">Loading...</span>
+                            <span class="next-task-meta">
+                                <span class="next-task-type" id="next-task-type">Fertilizer</span>
+                                <span class="next-task-freq" id="next-task-freq">Every 15 days</span>
+                            </span>
+                        </div>
+                        <span class="next-task-badge" id="next-task-date">Today</span>
                     </div>
-                    <span class="next-task-badge" id="next-task-date">Today</span>
+
+                    <div class="weather-card" id="weather-card">
+                        <div class="weather-header">
+                            <div class="weather-location">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M12 2C8 2 5 5.1 5 9.2c0 4.9 5.4 10.3 6.5 11.3.3.3.7.3 1 0C13.6 19.5 19 14 19 9.2 19 5.1 16 2 12 2z"/>
+                                    <circle cx="12" cy="9" r="2.5"/>
+                                </svg>
+                                <div class="weather-location-text">
+                                    <span class="label">Siwan, Bihar</span>
+                                    <span class="time" id="weather-time">--:--</span>
+                                </div>
+                            </div>
+                            <button class="weather-refresh" id="weather-refresh" title="Refresh weather">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="23 4 23 10 17 10"/>
+                                    <polyline points="1 20 1 14 7 14"/>
+                                    <path d="M3.51 9a9 9 0 0114.13-3.36L23 10M1 14l5.36 5.36A9 9 0 0020.49 15"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="weather-body">
+                            <div class="weather-temp" id="weather-temp">--°C</div>
+                            <div class="weather-condition" id="weather-condition">Loading forecast...</div>
+                        </div>
+                        <div class="weather-meta">
+                            <span id="weather-feels">Feels like --°C</span>
+                            <span id="weather-wind">Wind -- km/h</span>
+                            <span id="weather-updated">Updated --</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -364,7 +397,7 @@
                     </div>
 
                     <!-- Quick Tips Tab -->
-                    <div class="help-tab-content active" id="tab-tips">
+                    <div class="help-tab-content active" id="tab-tips" data-tab="tips">
                         <div class="tips-grid-modal">
                             <div class="tip-card-modal">
                                 <span class="tip-icon">1</span>
@@ -426,7 +459,7 @@
                     </div>
 
                     <!-- Schedule Reference Tab -->
-                    <div class="help-tab-content" id="tab-schedule">
+                    <div class="help-tab-content" id="tab-schedule" data-tab="schedule">
                         <div class="schedule-ref-modal">
                             <div class="ref-group">
                                 <h4>Fertilizers</h4>

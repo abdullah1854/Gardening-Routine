@@ -199,6 +199,9 @@ let allGeneratedEvents = [];
 let conflictsResolved = 0;
 let currentView = 'list';
 const STORAGE_KEY = 'gardenSchedulerPrefs';
+const WEATHER_COORDS = { lat: 26.22, lon: 84.36 }; // Siwan, Bihar
+const WEATHER_ENDPOINT = `https://api.open-meteo.com/v1/forecast?latitude=${WEATHER_COORDS.lat}&longitude=${WEATHER_COORDS.lon}&current=temperature_2m,apparent_temperature,wind_speed_10m,wind_gusts_10m,weather_code&timezone=auto`;
+const WEATHER_TIMEZONE = 'Asia/Kolkata';
 
 // Initialize on DOM ready
 document.addEventListener('DOMContentLoaded', () => {
@@ -218,6 +221,7 @@ function initializeApp() {
     initKeyboardShortcuts();
     initModals();
     initViewToggle();
+    initWeatherWidget();
 
     // Bind event listeners
     bindEventListeners();
@@ -698,6 +702,125 @@ function setView(view) {
         calendarView.classList.remove('hidden');
         renderCalendarView();
     }
+}
+
+// Weather (Siwan, Bihar) - Open-Meteo free API
+const weatherCodeLabels = {
+    0: 'Clear sky',
+    1: 'Mostly clear',
+    2: 'Partly cloudy',
+    3: 'Overcast',
+    45: 'Foggy',
+    48: 'Icy fog',
+    51: 'Light drizzle',
+    53: 'Drizzle',
+    55: 'Heavy drizzle',
+    56: 'Light freezing drizzle',
+    57: 'Freezing drizzle',
+    61: 'Light rain',
+    63: 'Rain',
+    65: 'Heavy rain',
+    66: 'Freezing rain',
+    67: 'Heavy freezing rain',
+    71: 'Light snow',
+    73: 'Snow',
+    75: 'Heavy snow',
+    77: 'Snow grains',
+    80: 'Light showers',
+    81: 'Showers',
+    82: 'Heavy showers',
+    85: 'Snow showers',
+    86: 'Heavy snow showers',
+    95: 'Thunderstorm',
+    96: 'Storm with small hail',
+    99: 'Storm with heavy hail'
+};
+
+function initWeatherWidget() {
+    const weatherCard = document.getElementById('weather-card');
+    if (!weatherCard) return;
+
+    updateWeatherClock();
+    fetchAndRenderWeather();
+
+    // Refresh clock every minute so it stays current without hammering the API
+    setInterval(updateWeatherClock, 60000);
+
+    const refreshBtn = document.getElementById('weather-refresh');
+    if (refreshBtn) {
+        refreshBtn.addEventListener('click', () => fetchAndRenderWeather(true));
+    }
+}
+
+function updateWeatherClock() {
+    const timeEl = document.getElementById('weather-time');
+    if (!timeEl) return;
+    timeEl.textContent = `Local time • ${formatLocalTime(new Date(), WEATHER_TIMEZONE)}`;
+}
+
+async function fetchAndRenderWeather(isManual = false) {
+    const tempEl = document.getElementById('weather-temp');
+    const conditionEl = document.getElementById('weather-condition');
+    const feelsEl = document.getElementById('weather-feels');
+    const windEl = document.getElementById('weather-wind');
+    const updatedEl = document.getElementById('weather-updated');
+    const weatherCard = document.getElementById('weather-card');
+
+    if (!tempEl || !conditionEl) return;
+
+    weatherCard?.classList.remove('error');
+    conditionEl.textContent = 'Fetching weather...';
+    updatedEl.textContent = 'Updating...';
+
+    try {
+        const response = await fetch(WEATHER_ENDPOINT);
+        if (!response.ok) {
+            throw new Error(`Weather API returned ${response.status}`);
+        }
+
+        const data = await response.json();
+        const current = data.current || {};
+        const condition = getWeatherCondition(current.weather_code);
+        const temp = typeof current.temperature_2m === 'number' ? Math.round(current.temperature_2m) : '--';
+        const feelsLike = typeof current.apparent_temperature === 'number' ? Math.round(current.apparent_temperature) : '--';
+        const wind = typeof current.wind_speed_10m === 'number' ? Math.round(current.wind_speed_10m) : '--';
+        const updatedTime = formatLocalTime(current.time || Date.now(), data.timezone || WEATHER_TIMEZONE);
+
+        tempEl.textContent = `${temp}°C`;
+        conditionEl.textContent = condition;
+        feelsEl.textContent = `Feels like ${feelsLike}°C`;
+        windEl.textContent = `Wind ${wind} km/h`;
+        updatedEl.textContent = `Updated ${updatedTime}`;
+
+        if (isManual) {
+            showToast('Weather updated for Siwan', 'success');
+        }
+    } catch (error) {
+        console.error('Weather fetch failed', error);
+        conditionEl.textContent = 'Weather unavailable';
+        feelsEl.textContent = 'Feels like --°C';
+        windEl.textContent = 'Wind -- km/h';
+        updatedEl.textContent = 'Check connection';
+        weatherCard?.classList.add('error');
+        if (isManual) {
+            showToast('Weather lookup failed. Please try again.', 'error');
+        }
+    }
+}
+
+function formatLocalTime(dateLike, timezone = WEATHER_TIMEZONE) {
+    const formatter = new Intl.DateTimeFormat('en-IN', {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: true,
+        timeZone: timezone
+    });
+    return formatter.format(new Date(dateLike));
+}
+
+function getWeatherCondition(code) {
+    const label = weatherCodeLabels[code];
+    return label || 'Outdoor conditions unavailable';
 }
 
 // Toast Notifications

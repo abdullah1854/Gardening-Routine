@@ -761,6 +761,114 @@ h1, h2, h3, h4, h5, h6 {
     background: var(--supplement-border);
 }
 
+/* Status row: next task + weather */
+.status-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: var(--space-3);
+    align-items: stretch;
+}
+
+.weather-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    padding: var(--space-3);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-light);
+    background: linear-gradient(135deg, var(--bg-primary) 0%, var(--primary-50) 100%);
+    box-shadow: var(--shadow-sm);
+    min-height: 100%;
+}
+
+[data-theme="dark"] .weather-card {
+    background: linear-gradient(135deg, var(--bg-primary) 0%, rgba(107, 142, 107, 0.08) 100%);
+    border-color: var(--primary-800);
+}
+
+.weather-card.error {
+    border-color: var(--error);
+    box-shadow: 0 0 0 1px rgba(199, 93, 56, 0.15);
+}
+
+.weather-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.weather-location {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    color: var(--text-secondary);
+    font-weight: 600;
+}
+
+.weather-location-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    line-height: var(--leading-tight);
+}
+
+.weather-location-text .label {
+    color: var(--text-primary);
+}
+
+.weather-location-text .time {
+    font-size: var(--font-xs);
+    color: var(--text-tertiary);
+}
+
+.weather-refresh {
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-full);
+    border: 1px solid var(--border-primary);
+    background: var(--bg-secondary);
+    color: var(--text-secondary);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.weather-refresh:hover {
+    background: var(--primary-50);
+    color: var(--primary-600);
+}
+
+[data-theme="dark"] .weather-refresh:hover {
+    background: var(--primary-900);
+}
+
+.weather-body {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-2);
+}
+
+.weather-temp {
+    font-size: var(--font-2xl);
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.weather-condition {
+    font-size: var(--font-sm);
+    color: var(--text-secondary);
+}
+
+.weather-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    font-size: var(--font-xs);
+    color: var(--text-tertiary);
+}
+
 /* ===== Subheader (Tagline + Next Task) ===== */
 .subheader {
     background: var(--bg-primary);
@@ -2946,8 +3054,8 @@ kbd {
 /* Tips Grid in Modal */
 .tips-grid-modal {
     display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--space-2);
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: var(--space-3);
 }
 
 .tip-card-modal {
@@ -3005,17 +3113,17 @@ kbd {
 }
 
 .tip-card-modal .tip-content p {
-    font-size: var(--font-xs);
+    font-size: var(--font-sm);
     color: var(--text-secondary);
     margin: 0;
-    line-height: var(--leading-snug);
+    line-height: var(--leading-normal);
 }
 
 /* Schedule Reference in Modal */
 .schedule-ref-modal {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-4);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: var(--space-3);
 }
 
 .ref-group {
@@ -3174,6 +3282,10 @@ kbd {
 
     .next-task-banner .next-task-name {
         font-size: var(--font-base);
+    }
+
+    .status-grid {
+        grid-template-columns: 1fr;
     }
 
     .app-layout {
