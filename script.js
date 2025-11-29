@@ -114,8 +114,8 @@ const routineItems = [
         type: "soil",
         description: "Nematode bio-control. Apply to moist soil, not foliage.",
         conflictsWith: ["Neem Oil Spray", "Trichoderma"],
-        conflictGaps: { "Organic Iron Dust": 7, "Mustard Cake Water": 8, "Neem Khali": 5, "Trichoderma": 7 },
-        warning: "Keep 5-7 days gap from Iron, 7-10 days from Mustard Cake; alternate with Trichoderma"
+        conflictGaps: { "Organic Iron Dust": 7, "Mustard Cake Water": 8, "Neem Khali": 5, "Trichoderma": 7, "Haldi Powder Spray": 5, "Saaf Fungicide (Carbendazim + Mancozeb)": 14 },
+        warning: "Keep 5-7 days gap from Iron, 7-10 days from Mustard Cake; alternate with Trichoderma; avoid chemical fungicides for 14d"
     },
     {
         name: "Trichoderma",
@@ -124,8 +124,8 @@ const routineItems = [
         type: "soil",
         description: "Beneficial fungi for soil health. Improves disease resistance.",
         conflictsWith: ["Neem Oil Spray", "Paecilomyces lilacinus"],
-        conflictGaps: { "Organic Iron Dust": 7, "Paecilomyces lilacinus": 7 },
-        warning: "Keep 5-7 days gap from Iron; alternate with Paecilomyces"
+        conflictGaps: { "Organic Iron Dust": 7, "Paecilomyces lilacinus": 7, "Haldi Powder Spray": 5, "Saaf Fungicide (Carbendazim + Mancozeb)": 14 },
+        warning: "Keep 5-7 days gap from Iron; alternate with Paecilomyces; avoid chemical fungicides for 14d"
     },
     {
         name: "Btk Bio Larvicide",
@@ -136,6 +136,26 @@ const routineItems = [
         conflictsWith: ["Neem Oil Spray"],
         conflictGaps: { "Neem Oil Spray": 3 },
         warning: "Apply when larvae are active. Reapply after rain."
+    },
+    {
+        name: "Haldi Powder Spray",
+        frequency: 30,
+        offset: 12,
+        type: "pest",
+        description: "Mild antifungal/antibacterial. 2-3g turmeric powder/L with a drop of soap; spray at dusk.",
+        conflictsWith: [],
+        conflictGaps: { "Trichoderma": 5, "Paecilomyces lilacinus": 5 },
+        warning: "Light contact fungicide; keep a 5-day gap from Trichoderma/Paecilomyces."
+    },
+    {
+        name: "Saaf Fungicide (Carbendazim + Mancozeb)",
+        frequency: 45,
+        offset: 18,
+        type: "pest",
+        description: "Systemic+contact fungicide. 1-1.5g/L; use only when disease shows. Rotate modes to avoid resistance.",
+        conflictsWith: [],
+        conflictGaps: { "Trichoderma": 14, "Paecilomyces lilacinus": 14 },
+        warning: "Chemical fungicide; wear PPE and avoid bloom sprays. Keep 14 days away from bio-agents."
     }
 ];
 
@@ -884,6 +904,7 @@ function renderHeatmap(events, startDate, durationMonths) {
     const heatmapContainer = document.getElementById('calendar-heatmap');
     heatmapContainer.innerHTML = '';
 
+    // Map of date string -> count
     const eventCounts = {};
     events.forEach(event => {
         const dateStr = event.date.toDateString();
@@ -893,25 +914,51 @@ function renderHeatmap(events, startDate, durationMonths) {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
-    // Show 8 weeks of heatmap
-    const weeksToShow = 8;
-    const daysToShow = weeksToShow * 7;
+    // Cover the full selected duration, rounded to full weeks (start Monday, end Sunday)
+    const renderStart = new Date(startDate);
+    renderStart.setHours(0, 0, 0, 0);
+    const startDay = renderStart.getDay(); // 0 = Sunday
+    const daysToMonday = startDay === 0 ? 6 : startDay - 1;
+    renderStart.setDate(renderStart.getDate() - daysToMonday);
 
-    const currentDate = new Date(startDate);
+    const renderEnd = new Date(startDate);
+    renderEnd.setMonth(renderEnd.getMonth() + durationMonths);
+    renderEnd.setHours(0, 0, 0, 0);
+    const endDay = renderEnd.getDay();
+    const daysToSunday = endDay === 0 ? 0 : 7 - endDay;
+    renderEnd.setDate(renderEnd.getDate() + daysToSunday);
 
-    for (let i = 0; i < daysToShow; i++) {
+    const totalDays = Math.round((renderEnd - renderStart) / (1000 * 60 * 60 * 24)) + 1;
+    const maxCount = Math.max(0, ...Object.values(eventCounts));
+
+    const currentDate = new Date(renderStart);
+    for (let i = 0; i < totalDays; i++) {
         const day = document.createElement('div');
         day.className = 'heatmap-day';
 
         const dateStr = currentDate.toDateString();
         const count = eventCounts[dateStr] || 0;
 
-        if (count === 1) day.classList.add('level-1');
-        else if (count === 2) day.classList.add('level-2');
-        else if (count >= 3) day.classList.add('level-3');
+        // Intensity scaling
+        if (count > 0) {
+            if (maxCount <= 1 || count === 1) {
+                day.classList.add('level-1');
+            } else if (count >= maxCount * 0.66) {
+                day.classList.add('level-3');
+            } else {
+                day.classList.add('level-2');
+            }
+        }
 
         if (currentDate.toDateString() === today.toDateString()) {
             day.classList.add('today');
+        }
+
+        if (currentDate.getDate() === 1) {
+            const monthLabel = document.createElement('span');
+            monthLabel.className = 'heatmap-month-label';
+            monthLabel.textContent = currentDate.toLocaleDateString('default', { month: 'short' });
+            day.appendChild(monthLabel);
         }
 
         // Tooltip

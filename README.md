@@ -27,6 +27,8 @@ The schedule is built on a scientifically-backed rotation of organic fertilizers
 ### 🛡️ Pest Control
 *   **Neem Oil Spray**: Every 8 days — Spray in evening (5ml/L + liquid soap). Covers both leaf sides.
 *   **Btk Bio Larvicide**: Every 14 days — Biological larvicide for caterpillars. Spray in evening.
+*   **Haldi Powder Spray**: Every 30 days — 2-3g/L with a drop of soap; mild antifungal at dusk.
+*   **Saaf Fungicide (Carbendazim + Mancozeb)**: Every 45 days, disease-only — 1-1.5g/L. Keep 14 days away from bio-agents (Trichoderma/Paecilomyces), wear PPE.
 
 ### 🌱 Soil Health
 *   **Compost / Vermicompost**: Every 22 days — Mix 2-3 handfuls into top soil. Water afterwards.

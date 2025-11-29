@@ -848,6 +848,7 @@ input[type="date"]:focus,
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     gap: 3px;
+    align-items: start;
 }
 
 .heatmap-day {
@@ -857,6 +858,7 @@ input[type="date"]:focus,
     transition: all var(--transition-fast);
     cursor: pointer;
     position: relative;
+    overflow: hidden;
 }
 
 .heatmap-day:hover {
@@ -899,6 +901,28 @@ input[type="date"]:focus,
 
 .heatmap-day:hover .heatmap-day-label {
     opacity: 1;
+}
+
+.heatmap-month-label {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    font-size: 0.6rem;
+    font-weight: 700;
+    color: var(--text-tertiary);
+    letter-spacing: 0.02em;
+    background: rgba(0, 0, 0, 0.04);
+    padding: 1px 4px;
+    border-radius: var(--radius-sm);
+}
+
+[data-theme="dark"] .heatmap-month-label {
+    background: rgba(255, 255, 255, 0.06);
+}
+
+[data-theme="dark"] .heatmap-day-label {
+    background: var(--gray-50);
+    color: var(--gray-900);
 }
 
 .heatmap-legend {
