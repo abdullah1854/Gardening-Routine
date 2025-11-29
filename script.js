@@ -1,5 +1,18 @@
-// Garden Care Scheduler - Enhanced Modern UI
+// Siwan Kitchen Garden - Smart Garden Care Scheduler
 // Complete Data Model with Gap-Based Conflict Resolution
+
+// Register Service Worker for offline support
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+            .then((registration) => {
+                console.log('SW registered:', registration.scope);
+            })
+            .catch((error) => {
+                console.log('SW registration failed:', error);
+            });
+    });
+}
 
 const routineItems = [
     {
@@ -449,9 +462,18 @@ function showToast(message, type = 'info') {
 }
 
 // Preferences
+function getTodayDateString() {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+}
+
 function loadPreferences() {
     const startDateInput = document.getElementById('start-date');
     const durationSelect = document.getElementById('duration');
+    const todayStr = getTodayDateString();
 
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved) {
@@ -459,6 +481,8 @@ function loadPreferences() {
             const prefs = JSON.parse(saved);
             if (prefs.startDate) {
                 startDateInput.value = prefs.startDate;
+            } else {
+                startDateInput.value = todayStr;
             }
             if (prefs.duration) {
                 durationSelect.value = prefs.duration;
@@ -470,10 +494,10 @@ function loadPreferences() {
                 });
             }
         } catch (e) {
-            startDateInput.value = '2025-12-01';
+            startDateInput.value = todayStr;
         }
     } else {
-        startDateInput.value = '2025-12-01';
+        startDateInput.value = todayStr;
     }
 }
 
@@ -792,25 +816,30 @@ function updateFilterCounts(events) {
 }
 
 function markTodayEvents() {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
+    const now = new Date();
+    const todayStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
 
     document.querySelectorAll('.event-card').forEach(card => {
         const eventDate = new Date(card.dataset.date);
-        eventDate.setHours(0, 0, 0, 0);
+        const eventStr = `${eventDate.getFullYear()}-${String(eventDate.getMonth() + 1).padStart(2, '0')}-${String(eventDate.getDate()).padStart(2, '0')}`;
 
-        if (eventDate.getTime() === today.getTime()) {
+        if (eventStr === todayStr) {
             card.classList.add('is-today');
         }
     });
 }
 
 function updateNextTask(events) {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
+    const now = new Date();
+    const todayStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+    const today = new Date(todayStr + 'T00:00:00');
 
     const futureEvents = events
-        .filter(e => e.date >= today)
+        .filter(e => {
+            const eventDate = new Date(e.date);
+            const eventStr = `${eventDate.getFullYear()}-${String(eventDate.getMonth() + 1).padStart(2, '0')}-${String(eventDate.getDate()).padStart(2, '0')}`;
+            return eventStr >= todayStr;
+        })
         .sort((a, b) => a.date - b.date);
 
     const nextTask = futureEvents[0];
@@ -820,13 +849,19 @@ function updateNextTask(events) {
     if (nextTask) {
         nameEl.textContent = nextTask.name;
 
-        const diffDays = Math.ceil((nextTask.date - today) / (1000 * 60 * 60 * 24));
-        if (diffDays === 0) {
+        const eventDate = new Date(nextTask.date);
+        const eventStr = `${eventDate.getFullYear()}-${String(eventDate.getMonth() + 1).padStart(2, '0')}-${String(eventDate.getDate()).padStart(2, '0')}`;
+
+        if (eventStr === todayStr) {
             dateEl.textContent = 'Today';
-        } else if (diffDays === 1) {
-            dateEl.textContent = 'Tomorrow';
         } else {
-            dateEl.textContent = `In ${diffDays} days`;
+            const eventDay = new Date(eventStr + 'T00:00:00');
+            const diffDays = Math.round((eventDay - today) / (1000 * 60 * 60 * 24));
+            if (diffDays === 1) {
+                dateEl.textContent = 'Tomorrow';
+            } else {
+                dateEl.textContent = `In ${diffDays} days`;
+            }
         }
     } else {
         nameEl.textContent = 'No upcoming tasks';

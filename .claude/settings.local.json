@@ -5,7 +5,11 @@
       "Bash(fold:*)",
       "mcp__filesystem__directory_tree",
       "mcp__filesystem__list_directory",
-      "mcp__filesystem__read_text_file"
+      "mcp__filesystem__read_text_file",
+      "mcp__hostinger-mcp__hosting_listWebsitesV1",
+      "mcp__hostinger-mcp__domains_getDomainDetailsV1",
+      "mcp__hostinger-mcp__DNS_getDNSRecordsV1",
+      "mcp__hostinger-mcp__domains_updateDomainNameserversV1"
     ],
     "deny": [],
     "ask": []
