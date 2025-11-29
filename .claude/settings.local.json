@@ -13,7 +13,8 @@
       "mcp__hostinger-mcp__hosting_deployStaticWebsite",
       "Bash(git checkout:*)",
       "Bash(git restore:*)",
-      "WebSearch"
+      "WebSearch",
+      "Bash(/plugin install:*)"
     ],
     "deny": [],
     "ask": []

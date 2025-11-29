@@ -228,6 +228,31 @@ function bindEventListeners() {
 
     startDateInput.addEventListener('change', generateSchedule);
     durationSelect.addEventListener('change', generateSchedule);
+
+    // Expand/Collapse All button
+    const expandAllBtn = document.getElementById('expand-all-btn');
+    if (expandAllBtn) {
+        expandAllBtn.addEventListener('click', toggleExpandAll);
+    }
+}
+
+// Toggle expand/collapse all event cards
+function toggleExpandAll() {
+    const expandAllBtn = document.getElementById('expand-all-btn');
+    const allCards = document.querySelectorAll('.event-card');
+    const isExpanded = expandAllBtn.classList.contains('expanded');
+
+    if (isExpanded) {
+        // Collapse all
+        allCards.forEach(card => card.classList.remove('expanded'));
+        expandAllBtn.classList.remove('expanded');
+        expandAllBtn.querySelector('span').textContent = 'Expand All';
+    } else {
+        // Expand all
+        allCards.forEach(card => card.classList.add('expanded'));
+        expandAllBtn.classList.add('expanded');
+        expandAllBtn.querySelector('span').textContent = 'Collapse All';
+    }
 }
 
 // Theme Management
@@ -253,16 +278,31 @@ function initSettingsPanel() {
     const settingsToggle = document.getElementById('settings-toggle');
     const settingsPanel = document.getElementById('settings-panel');
 
+    // Settings panel was removed in UI redesign - skip if not present
+    if (!settingsToggle || !settingsPanel) return;
+
     settingsToggle.addEventListener('click', () => {
         settingsToggle.classList.toggle('active');
         settingsPanel.classList.toggle('open');
     });
 }
 
-// Filters
+// Filters - Updated for filter pills
 function initFilters() {
-    const filterCheckboxes = document.querySelectorAll('[data-filter]');
+    // Handle both old checkboxes (if any) and new filter pills
+    const filterPills = document.querySelectorAll('.filter-pill[data-filter]');
 
+    filterPills.forEach(pill => {
+        pill.addEventListener('click', () => {
+            pill.classList.toggle('active');
+            applyFilters();
+            savePreferences();
+            updateThisWeekList();
+        });
+    });
+
+    // Fallback for old checkbox system
+    const filterCheckboxes = document.querySelectorAll('input[data-filter]');
     filterCheckboxes.forEach(checkbox => {
         checkbox.addEventListener('change', () => {
             applyFilters();
@@ -273,9 +313,19 @@ function initFilters() {
 
 function applyFilters() {
     const filters = {};
-    document.querySelectorAll('[data-filter]').forEach(cb => {
-        filters[cb.dataset.filter] = cb.checked;
-    });
+
+    // Check for filter pills first (new system)
+    const filterPills = document.querySelectorAll('.filter-pill[data-filter]');
+    if (filterPills.length > 0) {
+        filterPills.forEach(pill => {
+            filters[pill.dataset.filter] = pill.classList.contains('active');
+        });
+    } else {
+        // Fallback to checkboxes (old system)
+        document.querySelectorAll('input[data-filter]').forEach(cb => {
+            filters[cb.dataset.filter] = cb.checked;
+        });
+    }
 
     let visibleCount = 0;
     document.querySelectorAll('.event-card').forEach(card => {
@@ -302,6 +352,73 @@ function applyFilters() {
         emptyState.classList.add('hidden');
         listView.classList.remove('hidden');
     }
+}
+
+// This Week List - shows next 7 days of tasks
+function updateThisWeekList() {
+    const container = document.getElementById('this-week-list');
+    if (!container) return;
+
+    const now = new Date();
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const weekFromNow = new Date(today);
+    weekFromNow.setDate(weekFromNow.getDate() + 7);
+
+    // Get active filters
+    const activeFilters = {};
+    document.querySelectorAll('.filter-pill[data-filter]').forEach(pill => {
+        activeFilters[pill.dataset.filter] = pill.classList.contains('active');
+    });
+
+    // Filter events for next 7 days
+    const weekEvents = allGeneratedEvents.filter(event => {
+        const eventDate = new Date(event.date);
+        const eventDay = new Date(eventDate.getFullYear(), eventDate.getMonth(), eventDate.getDate());
+        return eventDay >= today && eventDay < weekFromNow && activeFilters[event.type];
+    }).sort((a, b) => a.date - b.date);
+
+    if (weekEvents.length === 0) {
+        container.innerHTML = '<div class="week-empty">No tasks this week</div>';
+        return;
+    }
+
+    // Group by day
+    const dayGroups = {};
+    const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+    weekEvents.forEach(event => {
+        const eventDate = new Date(event.date);
+        const dateKey = eventDate.toDateString();
+        if (!dayGroups[dateKey]) {
+            dayGroups[dateKey] = {
+                date: eventDate,
+                events: []
+            };
+        }
+        dayGroups[dateKey].events.push(event);
+    });
+
+    let html = '';
+    Object.values(dayGroups).forEach(group => {
+        const isToday = group.date.toDateString() === today.toDateString();
+        const dayLabel = isToday ? 'Today' : `${dayNames[group.date.getDay()]} ${group.date.getDate()}`;
+
+        html += `<div class="week-day-group">`;
+        html += `<div class="week-day-header${isToday ? ' today' : ''}">${dayLabel} (${group.events.length})</div>`;
+
+        group.events.forEach(event => {
+            html += `
+                <div class="week-task-item" data-type="${event.type}">
+                    <span class="task-dot"></span>
+                    <span class="task-name">${event.name}</span>
+                </div>
+            `;
+        });
+
+        html += `</div>`;
+    });
+
+    container.innerHTML = html;
 }
 
 // Collapsible Sections
@@ -353,6 +470,10 @@ function initKeyboardShortcuts() {
             case '?':
                 toggleModal('shortcuts-modal');
                 break;
+            case 'h':
+                const helpModal = document.getElementById('help-modal');
+                if (helpModal) helpModal.classList.toggle('hidden');
+                break;
             case 'escape':
                 closeAllModals();
                 closeSettingsPanel();
@@ -381,21 +502,75 @@ function initModals() {
     const keyboardHint = document.getElementById('keyboard-hint');
     const shortcutsModal = document.getElementById('shortcuts-modal');
 
-    keyboardHint.addEventListener('click', () => {
-        toggleModal('shortcuts-modal');
+    if (keyboardHint && shortcutsModal) {
+        keyboardHint.addEventListener('click', () => {
+            toggleModal('shortcuts-modal');
+        });
+
+        // Close modal on overlay click
+        shortcutsModal.addEventListener('click', (e) => {
+            if (e.target === shortcutsModal) {
+                closeModal('shortcuts-modal');
+            }
+        });
+
+        // Close button
+        const closeBtn = shortcutsModal.querySelector('.modal-close');
+        if (closeBtn) {
+            closeBtn.addEventListener('click', () => {
+                closeModal('shortcuts-modal');
+            });
+        }
+    }
+
+    // Initialize Help modal
+    initHelpModal();
+}
+
+// Help Modal functionality
+function initHelpModal() {
+    const helpToggle = document.getElementById('help-toggle');
+    const helpModal = document.getElementById('help-modal');
+
+    if (!helpToggle || !helpModal) return;
+
+    // Open help modal
+    helpToggle.addEventListener('click', () => {
+        helpModal.classList.remove('hidden');
     });
 
-    // Close modal on overlay click
-    shortcutsModal.addEventListener('click', (e) => {
-        if (e.target === shortcutsModal) {
-            closeModal('shortcuts-modal');
+    // Close on overlay click
+    helpModal.addEventListener('click', (e) => {
+        if (e.target === helpModal) {
+            helpModal.classList.add('hidden');
         }
     });
 
     // Close button
-    const closeBtn = shortcutsModal.querySelector('.modal-close');
-    closeBtn.addEventListener('click', () => {
-        closeModal('shortcuts-modal');
+    const closeBtn = helpModal.querySelector('.modal-close');
+    if (closeBtn) {
+        closeBtn.addEventListener('click', () => {
+            helpModal.classList.add('hidden');
+        });
+    }
+
+    // Tab switching
+    const tabs = helpModal.querySelectorAll('.help-tab');
+    const tabContents = helpModal.querySelectorAll('.help-tab-content');
+
+    tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            const targetTab = tab.dataset.tab;
+
+            // Update active tab
+            tabs.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+
+            // Update visible content
+            tabContents.forEach(content => {
+                content.classList.toggle('active', content.dataset.tab === targetTab);
+            });
+        });
     });
 }
 
@@ -413,13 +588,16 @@ function closeAllModals() {
     document.querySelectorAll('.modal-overlay').forEach(modal => {
         modal.classList.add('hidden');
     });
+    // Also close help modal
+    const helpModal = document.getElementById('help-modal');
+    if (helpModal) helpModal.classList.add('hidden');
 }
 
 function closeSettingsPanel() {
     const settingsToggle = document.getElementById('settings-toggle');
     const settingsPanel = document.getElementById('settings-panel');
-    settingsToggle.classList.remove('active');
-    settingsPanel.classList.remove('open');
+    if (settingsToggle) settingsToggle.classList.remove('active');
+    if (settingsPanel) settingsPanel.classList.remove('open');
 }
 
 // View Toggle
@@ -523,9 +701,16 @@ function loadPreferences() {
                 durationSelect.value = prefs.duration;
             }
             if (prefs.filters) {
-                Object.entries(prefs.filters).forEach(([type, checked]) => {
-                    const cb = document.querySelector(`[data-filter="${type}"]`);
-                    if (cb) cb.checked = checked;
+                Object.entries(prefs.filters).forEach(([type, isActive]) => {
+                    const el = document.querySelector(`[data-filter="${type}"]`);
+                    if (el) {
+                        // Handle both filter pills (buttons) and checkboxes
+                        if (el.classList.contains('filter-pill')) {
+                            el.classList.toggle('active', isActive);
+                        } else {
+                            el.checked = isActive;
+                        }
+                    }
                 });
             }
         } catch (e) {
@@ -543,8 +728,13 @@ function savePreferences() {
         filters: {}
     };
 
-    document.querySelectorAll('[data-filter]').forEach(cb => {
-        prefs.filters[cb.dataset.filter] = cb.checked;
+    document.querySelectorAll('[data-filter]').forEach(el => {
+        // Handle both filter pills (buttons) and checkboxes
+        if (el.classList.contains('filter-pill')) {
+            prefs.filters[el.dataset.filter] = el.classList.contains('active');
+        } else {
+            prefs.filters[el.dataset.filter] = el.checked;
+        }
     });
 
     localStorage.setItem(STORAGE_KEY, JSON.stringify(prefs));
@@ -697,6 +887,7 @@ function generateSchedule() {
     applyFilters();
     markTodayEvents();
     updateNextTask(resolvedEvents);
+    updateThisWeekList();
     renderHeatmap(resolvedEvents, startDate, duration);
     renderInsights(resolvedEvents);
     savePreferences();
@@ -789,6 +980,7 @@ function renderSchedule(resolvedEvents) {
             title.textContent = event.name;
 
             const desc = document.createElement('p');
+            desc.className = 'event-description';
             desc.textContent = event.description;
 
             contentBox.appendChild(metaRow);
@@ -809,8 +1001,20 @@ function renderSchedule(resolvedEvents) {
                 contentBox.appendChild(rescheduled);
             }
 
+            // Expand/collapse toggle chevron
+            const expandToggle = document.createElement('div');
+            expandToggle.className = 'event-expand-toggle';
+            expandToggle.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>';
+
             eventCard.appendChild(dateCol);
             eventCard.appendChild(contentBox);
+            eventCard.appendChild(expandToggle);
+
+            // Click to expand/collapse
+            eventCard.addEventListener('click', () => {
+                eventCard.classList.toggle('expanded');
+            });
+
             eventList.appendChild(eventCard);
         });
 
@@ -831,8 +1035,12 @@ function getTypeLabel(type) {
 }
 
 function updateStats(events) {
-    document.getElementById('total-events').textContent = events.length;
-    document.getElementById('conflicts-resolved').textContent = conflictsResolved;
+    // Stats elements were removed in UI redesign - skip if not present
+    const totalEl = document.getElementById('total-events');
+    const conflictsEl = document.getElementById('conflicts-resolved');
+
+    if (totalEl) totalEl.textContent = events.length;
+    if (conflictsEl) conflictsEl.textContent = conflictsResolved;
 
     // Update progress bar
     const progressBar = document.getElementById('progress-bar');
@@ -895,12 +1103,14 @@ function updateNextTask(events) {
     const nameEl = document.getElementById('next-task-name');
     const dateEl = document.getElementById('next-task-date');
     const iconEl = document.getElementById('next-task-icon');
+    const typeEl = document.getElementById('next-task-type');
+    const freqEl = document.getElementById('next-task-freq');
     const cardEl = document.getElementById('next-task-indicator');
 
     if (nextTask) {
         nameEl.textContent = nextTask.name;
 
-        // Update icon based on type
+        // Update icon based on type (for old layout)
         if (iconEl) {
             iconEl.innerHTML = getTaskTypeIcon(nextTask.type);
         }
@@ -908,6 +1118,27 @@ function updateNextTask(events) {
         // Update card data-type for styling
         if (cardEl) {
             cardEl.setAttribute('data-type', nextTask.type);
+        }
+
+        // Update type label (new banner)
+        if (typeEl) {
+            const typeLabels = {
+                fertilizer: 'Fertilizer',
+                pest: 'Pest Control',
+                soil: 'Soil Health',
+                supplement: 'Supplement'
+            };
+            typeEl.textContent = typeLabels[nextTask.type] || nextTask.type;
+        }
+
+        // Update frequency (new banner)
+        if (freqEl) {
+            const item = routineItems.find(r => r.name === nextTask.name);
+            if (item) {
+                freqEl.textContent = `Every ${item.frequency} days`;
+            } else {
+                freqEl.textContent = '';
+            }
         }
 
         const eventDate = new Date(nextTask.date);
@@ -930,6 +1161,8 @@ function updateNextTask(events) {
         if (iconEl) {
             iconEl.innerHTML = getTaskTypeIcon('default');
         }
+        if (typeEl) typeEl.textContent = '';
+        if (freqEl) freqEl.textContent = '';
     }
 }
 
@@ -948,6 +1181,8 @@ function getTaskTypeIcon(type) {
 // Heatmap
 function renderHeatmap(events, startDate, durationMonths) {
     const heatmapContainer = document.getElementById('calendar-heatmap');
+    // Heatmap was removed in UI redesign - skip if not present
+    if (!heatmapContainer) return;
     heatmapContainer.innerHTML = '';
 
     // Map of date string -> count
@@ -1021,6 +1256,8 @@ function renderHeatmap(events, startDate, durationMonths) {
 // Insights
 function renderInsights(events) {
     const insightsList = document.getElementById('insights-list');
+    // Insights section was removed in UI redesign - skip if not present
+    if (!insightsList) return;
     insightsList.innerHTML = '';
 
     const today = new Date();
