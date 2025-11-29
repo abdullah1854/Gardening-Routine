@@ -14,7 +14,9 @@
       "Bash(git checkout:*)",
       "Bash(git restore:*)",
       "WebSearch",
-      "Bash(/plugin install:*)"
+      "Bash(/plugin install:*)",
+      "Bash(node -c:*)",
+      "Bash(python3:*)"
     ],
     "deny": [],
     "ask": []

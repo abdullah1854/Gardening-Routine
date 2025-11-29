@@ -164,12 +164,34 @@ const routineItems = [
     }
 ];
 
-// Icon SVGs for each type
+// Icon SVGs for each type - Illustrated garden style
 const typeIcons = {
-    fertilizer: '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>',
-    pest: '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>',
-    soil: '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>',
-    supplement: '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>'
+    fertilizer: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+        <path d="M6 9h12l-1 12H7L6 9z" fill="#e8d5a3" stroke="#c4913a" stroke-width="1.5"/>
+        <path d="M8 7c0-2 1.5-3 4-3s4 1 4 3" stroke="#b8860b" stroke-width="1.5" fill="none"/>
+        <path d="M12 11v5M10 13l2-2 2 2" stroke="#8b6914" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+        <circle cx="12" cy="9" r="2" fill="#d4a574" opacity="0.6"/>
+    </svg>`,
+    pest: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+        <path d="M12 3L4 7v6c0 5 8 8 8 8s8-3 8-8V7l-8-4z" fill="#c7dece" stroke="#4a7c54" stroke-width="1.5"/>
+        <path d="M12 7v9M9 10l3 3 3-3" stroke="#3a6243" stroke-width="1" fill="none"/>
+        <circle cx="12" cy="13" r="2" fill="#5c7a52"/>
+        <path d="M10 11l4 4" stroke="#c75d38" stroke-width="1.5" stroke-linecap="round"/>
+    </svg>`,
+    soil: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+        <rect x="4" y="10" width="16" height="12" rx="2" fill="#8b7355"/>
+        <rect x="4" y="13" width="16" height="9" rx="2" fill="#6b5338"/>
+        <rect x="4" y="16" width="16" height="6" rx="2" fill="#4a3828"/>
+        <path d="M8 14c1.5 0 1.5 1.5 3 1.5s1.5-1.5 3-1.5" stroke="#d4a574" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M12 6v4M10 8l2 2 2-2" stroke="#4a7c54" stroke-width="1.5" fill="none"/>
+    </svg>`,
+    supplement: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+        <path d="M6 10h8l1 9H5l1-9z" fill="#5a8fa8" stroke="#3a5d70" stroke-width="1.5"/>
+        <path d="M14 10l4-4" stroke="#5a8fa8" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="18" cy="6" r="2.5" fill="#87CEEB"/>
+        <path d="M9 21c0 1.2 1 2 2 2s2-.8 2-2-2-3-2-3-2 1.8-2 3z" fill="#87CEEB"/>
+        <path d="M14 20c0 .8.6 1.2 1.2 1.2s1.2-.4 1.2-1.2-1.2-2-1.2-2-1.2 1.2-1.2 2z" fill="#87CEEB" opacity="0.7"/>
+    </svg>`
 };
 
 // Global state
@@ -189,6 +211,7 @@ function initializeApp() {
 
     // Initialize UI components
     initTheme();
+    initAtmosphereToggle();
     initSettingsPanel();
     initFilters();
     initCollapsibles();
@@ -270,6 +293,49 @@ function initTheme() {
         localStorage.setItem('theme', newTheme);
 
         showToast(`${newTheme.charAt(0).toUpperCase() + newTheme.slice(1)} mode enabled`, 'info');
+    });
+}
+
+// Atmosphere Toggle (Floating Leaves/Fireflies)
+function initAtmosphereToggle() {
+    const atmosphereToggle = document.getElementById('atmosphere-toggle');
+    const gardenAtmosphere = document.querySelector('.garden-atmosphere');
+
+    if (!atmosphereToggle || !gardenAtmosphere) return;
+
+    // Load saved preference (default to enabled)
+    const savedAtmosphere = localStorage.getItem('gardenAtmosphere');
+    const isEnabled = savedAtmosphere === null ? true : savedAtmosphere === 'true';
+
+    if (!isEnabled) {
+        gardenAtmosphere.classList.add('hidden');
+        atmosphereToggle.classList.remove('active');
+    } else {
+        gardenAtmosphere.classList.remove('hidden');
+        atmosphereToggle.classList.add('active');
+    }
+
+    atmosphereToggle.addEventListener('click', () => {
+        const isCurrentlyEnabled = !gardenAtmosphere.classList.contains('hidden');
+
+        if (isCurrentlyEnabled) {
+            gardenAtmosphere.classList.add('hidden');
+            atmosphereToggle.classList.remove('active');
+            localStorage.setItem('gardenAtmosphere', 'false');
+        } else {
+            gardenAtmosphere.classList.remove('hidden');
+            atmosphereToggle.classList.add('active');
+            localStorage.setItem('gardenAtmosphere', 'true');
+        }
+    });
+
+    // Keyboard shortcut: 'A' to toggle atmosphere
+    document.addEventListener('keydown', (e) => {
+        if (e.key.toLowerCase() === 'a' && !e.ctrlKey && !e.metaKey && !e.altKey) {
+            // Don't trigger if user is typing in an input
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+            atmosphereToggle.click();
+        }
     });
 }
 
