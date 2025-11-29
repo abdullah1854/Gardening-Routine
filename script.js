@@ -21,6 +21,8 @@ const routineItems = [
         offset: 0,
         type: "fertilizer",
         description: "Ferment 50g in 1L water for 48-72 hrs, then dilute 1:10 with water before use. Apply 100-200ml per plant on DRY soil (stop watering 1 day before). Water after application.",
+        prepLeadDays: 2,
+        prepNote: "Start fermenting 50g in 1L water; it needs 48-72 hrs. Keep jar covered, stir daily. Dilute 1:10 before use on application day.",
         conflictsWith: [],
         conflictGaps: { "Neem Khali": 12, "Organic Iron Dust": 10, "Paecilomyces lilacinus": 8 },
         warning: "Keep 10-15 days gap from Neem Khali; never apply to wet soil or during cool, low-light periods"
@@ -1028,6 +1030,22 @@ function generateSchedule() {
                 date: new Date(currentDate),
                 ...item
             });
+
+            // Optional prep reminder (e.g., fermenting that must start earlier)
+            if (item.prepLeadDays && item.prepLeadDays > 0) {
+                const prepDate = new Date(currentDate);
+                prepDate.setDate(prepDate.getDate() - item.prepLeadDays);
+                if (prepDate >= startDate) {
+                    allEvents.push({
+                        date: prepDate,
+                        ...item,
+                        name: `${item.name} (Prep)`,
+                        description: item.prepNote || item.description,
+                        isPrep: true
+                    });
+                }
+            }
+
             currentDate.setDate(currentDate.getDate() + item.frequency);
         }
     });
@@ -1135,6 +1153,9 @@ function renderSchedule(resolvedEvents) {
             eventCard.dataset.type = event.type;
             eventCard.dataset.date = event.date.toISOString();
             eventCard.style.animationDelay = `${eventIndex * 30}ms`;
+            if (event.isPrep) {
+                eventCard.classList.add('is-prep');
+            }
 
             // Date column
             const dateCol = document.createElement('div');
@@ -1164,23 +1185,36 @@ function renderSchedule(resolvedEvents) {
             const metaRow = document.createElement('div');
             metaRow.className = 'event-meta';
 
+            if (event.isPrep) {
+                const prepChip = document.createElement('span');
+                prepChip.className = 'prep-pill';
+                prepChip.textContent = 'Prep reminder';
+                metaRow.appendChild(prepChip);
+            }
+
             const typeBadge = document.createElement('span');
-            typeBadge.className = `type-badge badge-${event.type}`;
-            typeBadge.innerHTML = `${typeIcons[event.type]} ${getTypeLabel(event.type)}`;
+            typeBadge.className = `type-badge badge-${event.type}${event.isPrep ? ' badge-prep' : ''}`;
+            const label = event.isPrep ? 'Reminder' : getTypeLabel(event.type);
+            typeBadge.innerHTML = `${typeIcons[event.type]} ${label}`;
 
             const freqLabel = document.createElement('span');
             freqLabel.className = 'freq-label';
-            freqLabel.textContent = `Every ${event.frequency} days`;
+            freqLabel.textContent = event.isPrep ? `Do this ${event.prepLeadDays} day(s) before` : `Every ${event.frequency} days`;
 
             metaRow.appendChild(typeBadge);
             metaRow.appendChild(freqLabel);
 
             const title = document.createElement('h3');
-            title.textContent = event.name;
+            const cleanName = event.isPrep ? event.name.replace(/\s*\(Prep\)$/i, '') : event.name;
+            title.textContent = event.isPrep ? `Prep: ${cleanName}` : cleanName;
 
             const desc = document.createElement('p');
             desc.className = 'event-description';
             desc.textContent = event.description;
+
+            if (event.isPrep) {
+                contentBox.classList.add('is-prep');
+            }
 
             contentBox.appendChild(metaRow);
             contentBox.appendChild(title);
