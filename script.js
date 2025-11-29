@@ -314,9 +314,13 @@ function initAtmosphereToggle() {
     if (!isEnabled) {
         gardenAtmosphere.classList.add('hidden');
         atmosphereToggle.classList.remove('active');
+        atmosphereToggle.setAttribute('aria-pressed', 'false');
+        atmosphereToggle.setAttribute('title', 'Enable floating leaves (A)');
     } else {
         gardenAtmosphere.classList.remove('hidden');
         atmosphereToggle.classList.add('active');
+        atmosphereToggle.setAttribute('aria-pressed', 'true');
+        atmosphereToggle.setAttribute('title', 'Disable floating leaves (A)');
     }
 
     atmosphereToggle.addEventListener('click', () => {
@@ -325,11 +329,17 @@ function initAtmosphereToggle() {
         if (isCurrentlyEnabled) {
             gardenAtmosphere.classList.add('hidden');
             atmosphereToggle.classList.remove('active');
+            atmosphereToggle.setAttribute('aria-pressed', 'false');
+            atmosphereToggle.setAttribute('title', 'Enable floating leaves (A)');
             localStorage.setItem('gardenAtmosphere', 'false');
+            showToast('Floating leaves hidden', 'info');
         } else {
             gardenAtmosphere.classList.remove('hidden');
             atmosphereToggle.classList.add('active');
+            atmosphereToggle.setAttribute('aria-pressed', 'true');
+            atmosphereToggle.setAttribute('title', 'Disable floating leaves (A)');
             localStorage.setItem('gardenAtmosphere', 'true');
+            showToast('Floating leaves enabled', 'success');
         }
     });
 
