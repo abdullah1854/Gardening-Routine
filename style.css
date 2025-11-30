@@ -2751,6 +2751,37 @@ h1, h2, h3, h4, h5, h6 {
     color: #8a5a0a;
 }
 
+[data-theme="dark"] .event-card.is-prep {
+    background: #2d2414;
+    border-color: rgba(196, 145, 58, 0.6);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.4);
+}
+
+[data-theme="dark"] .event-card.is-prep .event-date-col {
+    background: linear-gradient(180deg, #3a2d17 0%, #2a2112 100%);
+    border-color: rgba(196, 145, 58, 0.5);
+}
+
+[data-theme="dark"] .event-card.is-prep .day-num,
+[data-theme="dark"] .event-card.is-prep .month-short,
+[data-theme="dark"] .event-card.is-prep .weekday {
+    color: #f0d7a1;
+}
+
+[data-theme="dark"] .event-card .event-content.is-prep {
+    background: linear-gradient(90deg, rgba(196, 145, 58, 0.16) 0%, rgba(34, 26, 14, 0.8) 60%);
+    border-left-color: #f0d7a1;
+}
+
+[data-theme="dark"] .event-card .event-content.is-prep .event-description {
+    background: rgba(196, 145, 58, 0.22);
+    color: var(--text-primary);
+}
+
+[data-theme="dark"] .prep-pill {
+    background: rgba(240, 215, 161, 0.25);
+    color: #f0d7a1;
+}
 /* Warning Box */
 .warning-box {
     margin-top: var(--space-3);
