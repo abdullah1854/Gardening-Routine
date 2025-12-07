@@ -23,6 +23,7 @@ The schedule is built on a scientifically-backed rotation of organic fertilizers
 *   **Seaweed Extract**: Every 17 days — Foliar spray or root drench (5-10ml/L). Growth hormones & micronutrients.
 *   **Epsom Salt Spray**: Every 37 days — Foliar spray (1 tbsp/L). Magnesium for lush green foliage. Keep 7-day gap from Iron.
 *   **Organic Iron Dust**: Every 37 days — Treats chlorosis (yellow leaves with green veins). Requires gaps from many items.
+*   **Humic Acid**: Every 21 days — Foliar spray or root drench (5-10ml/L). Improves nutrient uptake & stress tolerance.
 
 ### 🛡️ Pest Control
 *   **Neem Oil Spray**: Every 8 days — Spray in evening (5ml/L + liquid soap). Covers both leaf sides.
@@ -34,7 +35,9 @@ The schedule is built on a scientifically-backed rotation of organic fertilizers
 *   **Compost / Vermicompost**: Every 22 days — Mix 2-3 handfuls into top soil. Water afterwards.
 *   **Neem Khali**: Every 37 days — Soil application for nematodes/fungus. Keep 10-15 days gap from Mustard Cake Water.
 *   **Paecilomyces lilacinus**: Every 37 days — Nematode bio-control. Apply to moist soil, not foliage.
+*   **Pseudomonas Fluorescent**: Every 20 days — Bio-fungicide soil drench (5g/L). Controls root rot, damping-off & wilts.
 *   **Trichoderma**: Every 37 days — Beneficial fungi for soil health. Improves disease resistance.
+*   **Wood Ash**: Annually (Winter) — Potassium source (1-2 Tbsp/plant). Test pH first; avoid monsoon application.
 
 ## 🚀 How to Use
 

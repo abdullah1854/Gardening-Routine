@@ -164,6 +164,36 @@ const routineItems = [
         conflictsWith: [],
         conflictGaps: { "Trichoderma": 14, "Paecilomyces lilacinus": 14 },
         warning: "⚠️ Carbendazim KILLS beneficial microbes (only 12% compatible with Trichoderma). Wear PPE. Avoid bloom sprays. Mandatory 14+ day gap before/after bio-agents"
+    },
+    {
+        name: "Humic Acid",
+        frequency: 21,
+        offset: 17,
+        type: "supplement",
+        description: "Soil conditioner & nutrient enhancer. Foliar spray: 5-10ml/L water early morning or late evening. Root drench: 50-100ml per 10L. Improves nutrient uptake, stress tolerance & microbial activity.",
+        conflictsWith: [],
+        conflictGaps: { "Saaf Fungicide (Carbendazim + Mancozeb)": 5 },
+        warning: "Keep 4-5 day gap from chemical fertilizers. Avoid applying in hot midday sun. Max concentration 1:10 for foliar."
+    },
+    {
+        name: "Pseudomonas Fluorescent",
+        frequency: 20,
+        offset: 35,
+        type: "soil",
+        description: "Bio-fungicide (1.0% W.P.). Mix 5g/L water, drench near root zone. Controls damping-off, root rot, collar rot & wilts. Apply early morning or late evening.",
+        conflictsWith: ["Saaf Fungicide (Carbendazim + Mancozeb)"],
+        conflictGaps: { "Saaf Fungicide (Carbendazim + Mancozeb)": 14, "Neem Oil Spray": 3, "Trichoderma": 3, "Paecilomyces lilacinus": 3 },
+        warning: "Keep 14+ day gap from chemical fungicides (Saaf). Carbendazim is toxic to bio-agents. Apply to MOIST soil, not dry."
+    },
+    {
+        name: "Wood Ash",
+        frequency: 365,
+        offset: 60,
+        type: "fertilizer",
+        description: "Potassium source (3-10% K) & pH adjuster. Scatter 1-2 Tbsp per plant on tilled soil, rake in. Test soil pH first. Use ONLY from untreated natural wood.",
+        conflictsWith: [],
+        conflictGaps: { "Organic Iron Dust": 14 },
+        warning: "⚠️ Apply in Winter/Dry season. Avoid during heavy Monsoon (washout risk). AVOID for acid-loving plants and potatoes."
     }
 ];
 
