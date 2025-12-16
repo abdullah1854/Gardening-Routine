@@ -1,4 +1,4 @@
-const CACHE_NAME = 'siwan-garden-v1';
+const CACHE_NAME = 'siwan-garden-v2';
 const ASSETS_TO_CACHE = [
     '/',
     '/index.html',

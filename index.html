@@ -388,6 +388,10 @@
                     <div class="shortcut-group">
                         <h3>Actions</h3>
                         <div class="shortcut-item">
+                            <span class="shortcut-keys"><kbd>C</kbd></span>
+                            <span class="shortcut-desc">Open garden assistant</span>
+                        </div>
+                        <div class="shortcut-item">
                             <span class="shortcut-keys"><kbd>E</kbd></span>
                             <span class="shortcut-desc">Export to calendar</span>
                         </div>
@@ -538,6 +542,86 @@
 
         <!-- Toast Container -->
         <div class="toast-container" id="toast-container"></div>
+
+        <!-- AI Chat Button -->
+        <button class="chat-fab" id="chat-fab" title="Ask gardening questions (C)" aria-label="Open garden assistant chat">
+            <svg class="chat-fab-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 3c-4.97 0-9 3.185-9 7.115 0 2.557 1.522 4.82 3.889 6.115l-.78 3.77 4.142-2.057c.569.085 1.153.13 1.749.13 4.97 0 9-3.186 9-7.115C21 6.185 16.97 3 12 3z"/>
+                <path d="M8 9h.01M12 9h.01M16 9h.01" stroke-linecap="round"/>
+            </svg>
+            <svg class="chat-fab-close" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="18" y1="6" x2="6" y2="18"/>
+                <line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+        </button>
+
+        <!-- AI Chat Modal -->
+        <div class="chat-modal hidden" id="chat-modal" role="dialog" aria-labelledby="chat-title">
+            <div class="chat-header">
+                <div class="chat-title-row">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 2C7 2 4 6 4 10c0 2 1 4 3 5v4a2 2 0 002 2h6a2 2 0 002-2v-4c2-1 3-3 3-5 0-4-3-8-8-8z"/>
+                        <path d="M9 21v-2M15 21v-2"/>
+                    </svg>
+                    <h3 id="chat-title">Garden Assistant</h3>
+                </div>
+                <div class="chat-actions">
+                    <button class="chat-action-btn" id="chat-clear" title="Clear chat history">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="3 6 5 6 21 6"/>
+                            <path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/>
+                        </svg>
+                    </button>
+                    <button class="chat-action-btn" id="chat-settings" title="API settings">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="3"/>
+                            <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/>
+                        </svg>
+                    </button>
+                    <button class="chat-action-btn chat-close-btn" id="chat-close" title="Minimize chat">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="18" y1="6" x2="6" y2="18"/>
+                            <line x1="6" y1="6" x2="18" y2="18"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div class="chat-messages" id="chat-messages">
+                <!-- Welcome message -->
+                <div class="chat-welcome" id="chat-welcome">
+                    <div class="welcome-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M12 2C7 2 4 6 4 10c0 2 1 4 3 5v4a2 2 0 002 2h6a2 2 0 002-2v-4c2-1 3-3 3-5 0-4-3-8-8-8z"/>
+                            <path d="M9 21v-2M15 21v-2"/>
+                        </svg>
+                    </div>
+                    <h4>Hi! I'm your Garden Assistant</h4>
+                    <p>Ask me anything about your gardening routine, treatments, or plant care.</p>
+                    <div class="welcome-suggestions">
+                        <button class="suggestion-chip" data-question="When should I apply Neem Oil?">When to apply Neem Oil?</button>
+                        <button class="suggestion-chip" data-question="How do I prepare Mustard Cake Water?">Prepare Mustard Cake?</button>
+                        <button class="suggestion-chip" data-question="What's the gap between Neem Khali and Mustard Cake?">Neem Khali vs Mustard Cake gap?</button>
+                        <button class="suggestion-chip" data-question="Which treatments conflict with each other?">Treatment conflicts?</button>
+                    </div>
+                </div>
+                <!-- Messages will be added here -->
+            </div>
+            <div class="chat-typing hidden" id="chat-typing">
+                <span class="typing-dot"></span>
+                <span class="typing-dot"></span>
+                <span class="typing-dot"></span>
+            </div>
+            <form class="chat-input-form" id="chat-form">
+                <input type="text" class="chat-input" id="chat-input" placeholder="Ask about gardening..." autocomplete="off">
+                <button type="submit" class="chat-send-btn" id="chat-send" title="Send message">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="22" y1="2" x2="11" y2="13"/>
+                        <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                    </svg>
+                </button>
+            </form>
+        </div>
+
     </div>
 
     <script src="script.js"></script>

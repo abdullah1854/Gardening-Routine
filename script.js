@@ -1660,3 +1660,393 @@ style.textContent = `
     }
 `;
 document.head.appendChild(style);
+
+// ===== AI Chat Assistant (GPT-4o-mini) =====
+
+const CHAT_STORAGE_KEY = 'gardenChatHistory';
+
+// Build knowledge context from routineItems
+function buildGardenKnowledge() {
+    let knowledge = "GARDENING KNOWLEDGE BASE:\n\n";
+
+    routineItems.forEach(item => {
+        knowledge += `## ${item.name}\n`;
+        knowledge += `Type: ${item.type}\n`;
+        knowledge += `Frequency: Every ${item.frequency} days\n`;
+        knowledge += `Description: ${item.description}\n`;
+        if (item.applyNote) knowledge += `Application: ${item.applyNote}\n`;
+        if (item.prepNote) knowledge += `Preparation: ${item.prepNote} (Start ${item.prepLeadDays} days before)\n`;
+        if (item.warning) knowledge += `Warning: ${item.warning}\n`;
+        if (item.conflictsWith && item.conflictsWith.length > 0) {
+            knowledge += `Cannot apply same day as: ${item.conflictsWith.join(', ')}\n`;
+        }
+        if (item.conflictGaps && Object.keys(item.conflictGaps).length > 0) {
+            knowledge += `Required gaps: ${Object.entries(item.conflictGaps).map(([k, v]) => `${v} days from ${k}`).join('; ')}\n`;
+        }
+        knowledge += '\n';
+    });
+
+    return knowledge;
+}
+
+// Build schedule context from generated events
+function buildScheduleContext() {
+    if (!allGeneratedEvents || allGeneratedEvents.length === 0) {
+        return "No schedule generated yet.";
+    }
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const pastDays = 7;
+    const futureDays = 14;
+
+    const pastDate = new Date(today);
+    pastDate.setDate(pastDate.getDate() - pastDays);
+
+    const futureDate = new Date(today);
+    futureDate.setDate(futureDate.getDate() + futureDays);
+
+    // Filter events
+    const recentEvents = [];
+    const todayEvents = [];
+    const upcomingEvents = [];
+
+    allGeneratedEvents.forEach(event => {
+        const eventDate = new Date(event.date);
+        eventDate.setHours(0, 0, 0, 0);
+
+        if (eventDate.getTime() === today.getTime()) {
+            todayEvents.push(event);
+        } else if (eventDate >= pastDate && eventDate < today) {
+            recentEvents.push(event);
+        } else if (eventDate > today && eventDate <= futureDate) {
+            upcomingEvents.push(event);
+        }
+    });
+
+    // Sort by date
+    recentEvents.sort((a, b) => b.date - a.date);
+    upcomingEvents.sort((a, b) => a.date - b.date);
+
+    // Format context
+    let context = "USER'S GARDENING SCHEDULE:\n\n";
+
+    // Today
+    context += "TODAY'S TASKS:\n";
+    if (todayEvents.length > 0) {
+        todayEvents.forEach(e => {
+            context += `- ${e.name} (${e.type})\n`;
+        });
+    } else {
+        context += "- No tasks scheduled for today\n";
+    }
+    context += "\n";
+
+    // Recent (past 7 days)
+    context += "RECENTLY COMPLETED (past 7 days):\n";
+    if (recentEvents.length > 0) {
+        recentEvents.slice(0, 10).forEach(e => {
+            const daysAgo = Math.ceil((today - e.date) / (1000 * 60 * 60 * 24));
+            context += `- ${e.name}: ${daysAgo} day${daysAgo > 1 ? 's' : ''} ago\n`;
+        });
+    } else {
+        context += "- No recent tasks\n";
+    }
+    context += "\n";
+
+    // Upcoming (next 14 days)
+    context += "UPCOMING TASKS (next 14 days):\n";
+    if (upcomingEvents.length > 0) {
+        upcomingEvents.slice(0, 15).forEach(e => {
+            const daysUntil = Math.ceil((e.date - today) / (1000 * 60 * 60 * 24));
+            const dateStr = e.date.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+            context += `- ${e.name}: ${dateStr} (in ${daysUntil} day${daysUntil > 1 ? 's' : ''})\n`;
+        });
+    } else {
+        context += "- No upcoming tasks in the next 2 weeks\n";
+    }
+
+    return context;
+}
+
+// System prompt for AI assistant
+function getSystemPrompt() {
+    const knowledge = buildGardenKnowledge();
+    const schedule = buildScheduleContext();
+
+    return `You are a helpful garden assistant for the Siwan Kitchen Garden website. You specialize in organic gardening, fertilizers, pest control, and soil health.
+
+IMPORTANT RULES:
+1. ONLY answer questions related to gardening, plants, fertilizers, pest control, soil health, and the treatments listed below.
+2. If asked about anything unrelated to gardening (politics, coding, general knowledge, etc.), politely decline and redirect to gardening topics.
+3. Use the knowledge base below as your primary source. If information isn't in the knowledge base, you can provide general organic gardening advice.
+4. Keep responses concise but helpful. Use bullet points when listing multiple items.
+5. Always mention safety warnings when relevant.
+6. When discussing timing gaps between treatments, be specific about the number of days.
+7. Use the user's schedule context to give personalized advice. Reference their upcoming tasks or recently applied treatments when relevant.
+
+${schedule}
+
+${knowledge}
+
+TREATMENT CATEGORIES:
+- Fertilizer: Mustard Cake Water, PROM Granules, Wood Ash, Humic Acid
+- Pest Control: Neem Oil Spray, Btk Bio Larvicide, Haldi Powder Spray, Saaf Fungicide
+- Soil Health: Compost/Vermicompost, Neem Khali, Paecilomyces lilacinus, Trichoderma, Pseudomonas Fluorescent
+- Supplements: Seaweed Extract, Bone Meal, Epsom Salt Spray, Organic Iron Dust
+
+Remember: Be friendly, helpful, and focused only on gardening topics. When the user asks about timing or what to do next, reference their actual schedule.`;
+}
+
+// Initialize chat
+function initChat() {
+    const chatFab = document.getElementById('chat-fab');
+    const chatModal = document.getElementById('chat-modal');
+    const chatForm = document.getElementById('chat-form');
+    const chatInput = document.getElementById('chat-input');
+    const chatMessages = document.getElementById('chat-messages');
+    const chatWelcome = document.getElementById('chat-welcome');
+    const chatTyping = document.getElementById('chat-typing');
+    const chatClear = document.getElementById('chat-clear');
+    const chatSettings = document.getElementById('chat-settings');
+
+    let chatHistory = loadChatHistory();
+
+    // Toggle chat modal
+    chatFab.addEventListener('click', () => {
+        const isOpen = !chatModal.classList.contains('hidden');
+        if (isOpen) {
+            chatModal.classList.add('hidden');
+            chatFab.classList.remove('active');
+        } else {
+            chatModal.classList.remove('hidden');
+            chatFab.classList.add('active');
+            chatInput.focus();
+            renderChatHistory();
+        }
+    });
+
+    // Handle form submission
+    chatForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const message = chatInput.value.trim();
+        if (!message) return;
+
+        chatInput.value = '';
+        await sendMessage(message);
+    });
+
+    // Suggestion chips
+    document.querySelectorAll('.suggestion-chip').forEach(chip => {
+        chip.addEventListener('click', async () => {
+            const question = chip.dataset.question;
+            if (question) {
+                await sendMessage(question);
+            }
+        });
+    });
+
+    // Clear chat
+    chatClear.addEventListener('click', () => {
+        chatHistory = [];
+        saveChatHistory([]);
+        chatMessages.innerHTML = '';
+        chatMessages.appendChild(chatWelcome);
+        chatWelcome.classList.remove('hidden');
+        showToast('Chat history cleared', 'success');
+    });
+
+    // Hide settings button (no longer needed - API key is on server)
+    if (chatSettings) {
+        chatSettings.style.display = 'none';
+    }
+
+    // Close button (for mobile)
+    const chatClose = document.getElementById('chat-close');
+    if (chatClose) {
+        chatClose.addEventListener('click', () => {
+            chatModal.classList.add('hidden');
+            chatFab.classList.remove('active');
+        });
+    }
+
+    // Keyboard shortcut: C to toggle chat
+    document.addEventListener('keydown', (e) => {
+        if (e.key.toLowerCase() === 'c' && !isInputFocused()) {
+            chatFab.click();
+        }
+        // Escape to close chat
+        if (e.key === 'Escape' && !chatModal.classList.contains('hidden')) {
+            chatModal.classList.add('hidden');
+            chatFab.classList.remove('active');
+        }
+    });
+
+    // Send message function
+    async function sendMessage(message) {
+        // Hide welcome, show user message
+        chatWelcome.classList.add('hidden');
+        addMessage('user', message);
+        chatHistory.push({ role: 'user', content: message });
+
+        // Show typing indicator
+        chatTyping.classList.remove('hidden');
+        scrollToBottom();
+
+        try {
+            const response = await callChatAPI(message, chatHistory);
+            chatTyping.classList.add('hidden');
+            addMessage('assistant', response);
+            chatHistory.push({ role: 'assistant', content: response });
+            saveChatHistory(chatHistory);
+        } catch (error) {
+            chatTyping.classList.add('hidden');
+            console.error('Chat API error:', error);
+
+            let errorMsg = 'Sorry, I encountered an error. Please try again.';
+            if (error.message.includes('rate')) {
+                errorMsg = 'Rate limit reached. Please wait a moment and try again.';
+            }
+
+            addErrorMessage(errorMsg);
+        }
+    }
+
+    // Add message to chat
+    function addMessage(role, content) {
+        const msgDiv = document.createElement('div');
+        msgDiv.className = `chat-message ${role}`;
+
+        const avatar = role === 'user' ?
+            `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>` :
+            `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C7 2 4 6 4 10c0 2 1 4 3 5v4a2 2 0 002 2h6a2 2 0 002-2v-4c2-1 3-3 3-5 0-4-3-8-8-8z"/></svg>`;
+
+        // Format content with basic markdown support
+        const formattedContent = formatMessage(content);
+
+        msgDiv.innerHTML = `
+            <div class="message-avatar">${avatar}</div>
+            <div class="message-content">${formattedContent}</div>
+        `;
+
+        chatMessages.appendChild(msgDiv);
+        scrollToBottom();
+    }
+
+    // Add error message
+    function addErrorMessage(message) {
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'chat-error';
+        errorDiv.textContent = message;
+        chatMessages.appendChild(errorDiv);
+        scrollToBottom();
+    }
+
+    // Format message (basic markdown)
+    function formatMessage(text) {
+        return text
+            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+            .replace(/\*(.*?)\*/g, '<em>$1</em>')
+            .replace(/^- (.*)$/gm, '• $1')
+            .replace(/\n/g, '<br>')
+            .split('<br><br>').map(p => `<p>${p}</p>`).join('');
+    }
+
+    // Scroll to bottom of messages
+    function scrollToBottom() {
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    // Render chat history on open
+    function renderChatHistory() {
+        if (chatHistory.length === 0) {
+            chatWelcome.classList.remove('hidden');
+            return;
+        }
+
+        chatWelcome.classList.add('hidden');
+        // Clear existing messages except welcome
+        const messages = chatMessages.querySelectorAll('.chat-message, .chat-error');
+        messages.forEach(m => m.remove());
+
+        chatHistory.forEach(msg => {
+            addMessage(msg.role, msg.content);
+        });
+    }
+
+    // Chat history persistence
+    function loadChatHistory() {
+        try {
+            const saved = localStorage.getItem(CHAT_STORAGE_KEY);
+            return saved ? JSON.parse(saved) : [];
+        } catch {
+            return [];
+        }
+    }
+
+    function saveChatHistory(history) {
+        // Keep only last 20 messages to save space
+        const trimmed = history.slice(-20);
+        localStorage.setItem(CHAT_STORAGE_KEY, JSON.stringify(trimmed));
+    }
+
+    // Check if input is focused
+    function isInputFocused() {
+        const active = document.activeElement;
+        return active.tagName === 'INPUT' || active.tagName === 'TEXTAREA' || active.isContentEditable;
+    }
+}
+
+// Call Chat API (proxied through server)
+async function callChatAPI(message, history) {
+    // Build messages array with recent history
+    const messages = [];
+
+    // Add previous messages (last 10 for context)
+    const recentHistory = history.slice(-10);
+    recentHistory.forEach(msg => {
+        messages.push({
+            role: msg.role,
+            content: msg.content
+        });
+    });
+
+    // Add current message
+    messages.push({
+        role: 'user',
+        content: message
+    });
+
+    const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            messages: messages,
+            systemPrompt: getSystemPrompt()
+        })
+    });
+
+    if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        if (response.status === 429) {
+            throw new Error('Rate limit exceeded');
+        }
+        throw new Error(errorData.error || 'API request failed');
+    }
+
+    const data = await response.json();
+
+    if (!data.reply) {
+        throw new Error('Invalid response from API');
+    }
+
+    return data.reply;
+}
+
+// Initialize chat when DOM is ready
+document.addEventListener('DOMContentLoaded', () => {
+    initChat();
+});

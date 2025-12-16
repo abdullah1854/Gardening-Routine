@@ -16,7 +16,14 @@
       "WebSearch",
       "Bash(/plugin install:*)",
       "Bash(node -c:*)",
-      "Bash(python3:*)"
+      "Bash(python3:*)",
+      "mcp__mcp-gateway__gateway_search_tools",
+      "mcp__mcp-gateway__gateway_list_tool_names",
+      "mcp__mcp-gateway__gateway_get_tool_schema",
+      "mcp__mcp-gateway__gateway_call_tool_filtered",
+      "Bash(zip:*)",
+      "Bash(npm start)",
+      "mcp__mcp-gateway__gateway_get_tool_schemas"
     ],
     "deny": [],
     "ask": []
